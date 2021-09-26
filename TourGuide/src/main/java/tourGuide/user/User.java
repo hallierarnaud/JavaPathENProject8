@@ -88,6 +88,7 @@ public class User {
 	}
 
 	public VisitedLocation getLastVisitedLocation() {
+		//return Iterables.getLast(visitedLocations);
 		return visitedLocations.get(visitedLocations.size() - 1);
 	}
 	
