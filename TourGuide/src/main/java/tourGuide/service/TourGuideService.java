@@ -33,7 +33,7 @@ public class TourGuideService {
 	private final GpsUtil gpsUtil;
 	private final RewardsService rewardsService;
 	private final TripPricer tripPricer = new TripPricer();
-	public final Tracker tracker;
+	//public final Tracker tracker;
 	boolean testMode = true;
 	
 	public TourGuideService(GpsUtil gpsUtil, RewardsService rewardsService) {
@@ -46,8 +46,8 @@ public class TourGuideService {
 			initializeInternalUsers();
 			logger.debug("Finished initializing users");
 		}
-		tracker = new Tracker(this);
-		addShutDownHook();
+		//tracker = new Tracker(this);
+		//addShutDownHook();
 	}
 	
 	public List<UserReward> getUserRewards(User user) {
@@ -101,13 +101,13 @@ public class TourGuideService {
 		return nearbyAttractions;
 	}
 	
-	private void addShutDownHook() {
+	/*private void addShutDownHook() {
 		Runtime.getRuntime().addShutdownHook(new Thread() { 
 		      public void run() {
 		        tracker.stopTracking();
 		      } 
 		    }); 
-	}
+	}*/
 	
 	/**********************************************************************************
 	 * 
