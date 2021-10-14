@@ -39,9 +39,9 @@ public class TourGuideController {
 
     @GetMapping("/getLocation")
     public String getLocationThroughMS(@RequestParam String userName) {
-      VisitedLocation visitedLocation = gpsProxy.getLocationThroughMS(userName);
-      return JsonStream.serialize(visitedLocation.location);
+      return gpsProxy.getLocationThroughMS(userName);
     }
+
     @GetMapping("/locations")
     public List<EntityBean> locations() {
       List<EntityBean> entityBeans = gpsProxy.entityBeanList();
