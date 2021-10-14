@@ -3,6 +3,7 @@ package tourGuide;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jsoniter.output.JsonStream;
 
 import gpsUtil.location.VisitedLocation;
+import tourGuide.proxies.GpsProxy;
 import tourGuide.service.TourGuideService;
+import tourGuide.user.EntityBean;
 import tourGuide.user.User;
 import tripPricer.Provider;
 
@@ -19,16 +22,30 @@ public class TourGuideController {
 
 	@Autowired
 	TourGuideService tourGuideService;
+
+	@Autowired
+    private GpsProxy gpsProxy;
 	
     @RequestMapping("/")
     public String index() {
         return "Greetings from TourGuide!";
     }
     
-    @RequestMapping("/getLocation") 
+    /*@RequestMapping("/getLocation")
     public String getLocation(@RequestParam String userName) {
     	VisitedLocation visitedLocation = tourGuideService.getUserLocation(getUser(userName));
 		return JsonStream.serialize(visitedLocation.location);
+    }*/
+
+    @GetMapping("/getLocation")
+    public String getLocationThroughMS(@RequestParam String userName) {
+      VisitedLocation visitedLocation = gpsProxy.getLocationThroughMS(userName);
+      return JsonStream.serialize(visitedLocation.location);
+    }
+    @GetMapping("/locations")
+    public List<EntityBean> locations() {
+      List<EntityBean> entityBeans = gpsProxy.entityBeanList();
+      return entityBeans;
     }
     
     //  TODO: Change this method to no longer return a List of Attractions.
