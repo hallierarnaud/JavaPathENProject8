@@ -10,4 +10,8 @@ public interface GpsProxy {
   @GetMapping(value = "/getLocation")
   String getLocationThroughMS(@RequestParam String userName);
 
+  //add a new endpoint to check communication between microservice and application
+  @GetMapping(value = "/getLocationCheck")
+  String getLocationCheckThroughMS(@RequestParam String userName);
+
 }
