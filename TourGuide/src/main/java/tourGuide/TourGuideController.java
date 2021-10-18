@@ -86,5 +86,9 @@ public class TourGuideController {
     	return tourGuideService.getUser(userName);
     }
    
+    @GetMapping("getUserThroughApplication")
+    public User getUserThroughApplication(String userName) {
+      return tourGuideService.getUser(userName);
+    }
 
 }
