@@ -14,6 +14,7 @@ import gpsUtil.location.VisitedLocation;
 import tourGuide.proxies.GpsProxy;
 import tourGuide.service.TourGuideService;
 import tourGuide.user.User;
+import tourGuide.user.UserDTOResponse;
 import tripPricer.Provider;
 
 @RestController
@@ -85,16 +86,17 @@ public class TourGuideController {
     private User getUser(String userName) {
     	return tourGuideService.getUser(userName);
     }
-   
+
+    //add an endpoint to get user directly through application
     @GetMapping("getUserThroughApplication")
     public User getUserThroughApplication(String userName) {
       return tourGuideService.getUser(userName);
     }
 
-    //add an endpoint to get user directly through application
-    @GetMapping("/getUser")
-    public User getUserEndPoint(String userName) {
-      return tourGuideService.getUser(userName);
+    //add an endpoint to get userDTO directly through application
+    @GetMapping("/getUserDTO")
+    public UserDTOResponse getUserEndPoint(String userName) {
+      return tourGuideService.getUserDTOResponse(userName);
     }
 
     //add two endpoints to check communication between microservice and application

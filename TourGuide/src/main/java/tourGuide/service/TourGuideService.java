@@ -14,6 +14,7 @@ import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gpsUtil.GpsUtil;
@@ -22,13 +23,19 @@ import gpsUtil.location.Location;
 import gpsUtil.location.VisitedLocation;
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.tracker.Tracker;
+import tourGuide.user.MapService;
 import tourGuide.user.User;
+import tourGuide.user.UserDTOResponse;
 import tourGuide.user.UserReward;
 import tripPricer.Provider;
 import tripPricer.TripPricer;
 
 @Service
 public class TourGuideService {
+
+	@Autowired
+	private MapService mapService;
+
 	private Logger logger = LoggerFactory.getLogger(TourGuideService.class);
 	private final GpsUtil gpsUtil;
 	private final RewardsService rewardsService;
@@ -63,6 +70,13 @@ public class TourGuideService {
 	
 	public User getUser(String userName) {
 		return internalUserMap.get(userName);
+	}
+
+	//add a method to get userDTO from user
+	public UserDTOResponse getUserDTOResponse (String userName) {
+		User user = internalUserMap.get(userName);
+		UserDTOResponse userDTOResponse = mapService.convertUserToUserDTOResponse(user);
+		return userDTOResponse;
 	}
 	
 	public List<User> getAllUsers() {
