@@ -41,6 +41,12 @@ public class TourGuideController {
     public String getLocationThroughMS(@RequestParam String userName) {
       return gpsProxy.getLocationThroughMS(userName);
     }
+
+    //add an endpoint to get user's location without the back and forth
+    @GetMapping("/getLocationWithUser")
+    public String getLocationThroughMSWithUser(@RequestParam String userName) {
+        return gpsProxy.getLocationThroughMSWithUser(userName);
+    }
     
     //  TODO: Change this method to no longer return a List of Attractions.
  	//  Instead: Get the closest five tourist attractions to the user - no matter how far away they are.
