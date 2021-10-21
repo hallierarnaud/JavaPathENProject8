@@ -4,12 +4,14 @@ import com.jsoniter.output.JsonStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import gpsUtil.location.Attraction;
 import gpsUtil.location.VisitedLocation;
 import tourGuide.proxies.GpsProxy;
 import tourGuide.service.TourGuideService;
@@ -85,6 +87,16 @@ public class TourGuideController {
     	//     }
     	
     	return JsonStream.serialize("");
+    }
+
+    @GetMapping("/getVisitedLocations")
+    public String getVisitedLocations(@RequestParam String userName) {
+        return JsonStream.serialize(gpsProxy.getVisitedLocations(userName));
+    }
+
+    @GetMapping("/getAttractions")
+    public String getAttractions() {
+        return JsonStream.serialize(gpsProxy.getAttractions());
     }
     
     @RequestMapping("/getTripDeals")
