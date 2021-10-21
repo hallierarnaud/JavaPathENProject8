@@ -18,4 +18,7 @@ public interface GpsProxy {
   @GetMapping(value = "/getLocationCheck")
   String getLocationCheckThroughMS(@RequestParam String userName);
 
+  @GetMapping(value = "/getNearbyAttractions")
+  String getNearbyAttractionThroughMS(@RequestParam String userName);
+
 }
