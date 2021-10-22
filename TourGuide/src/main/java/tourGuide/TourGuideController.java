@@ -4,17 +4,15 @@ import com.jsoniter.output.JsonStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import gpsUtil.location.Attraction;
-import gpsUtil.location.VisitedLocation;
 import tourGuide.proxies.GpsProxy;
 import tourGuide.service.TourGuideService;
+import tourGuide.user.AttractionDTOResponse;
 import tourGuide.user.User;
 import tourGuide.user.UserDTOResponse;
 import tripPricer.Provider;
@@ -95,9 +93,43 @@ public class TourGuideController {
     }
 
     @GetMapping("/getAttractions")
-    public String getAttractions() {
-        return JsonStream.serialize(gpsProxy.getAttractions());
+    public List<AttractionDTOResponse> getAttractions() {
+        return gpsProxy.getAttractions();
     }
+    /*@GetMapping("/getAttractions")
+    public JsonNode getAttractions() throws IOException {
+        String attractions = JsonStream.serialize(gpsProxy.getAttractions());
+        JsonNode node = null;
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            node = mapper.readTree(attractions);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return node;
+    }*/
+    /*@GetMapping("/getAttraction")
+    public AttractionDTORequest getAttraction(@RequestParam int attractionNumber) {
+        return gpsProxy.getAttraction(attractionNumber);
+    }*/
+    /*@GetMapping("/getAttraction")
+    public Attraction getAttraction(@RequestParam int attractionNumber) throws IOException {
+        String attractionJsonString = JsonStream.serialize(gpsProxy.getAttraction(attractionNumber));
+        Attraction attraction = new ObjectMapper().readValue(attractionJsonString, Attraction.class);
+        return attraction;
+    }*/
+    /*@GetMapping("/getAttraction")
+    public JsonNode getAttraction(@RequestParam int attractionNumber) throws IOException {
+        String attractionJsonString = JsonStream.serialize(gpsProxy.getAttraction(attractionNumber));
+        JsonNode attraction = null;
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            attraction = mapper.readTree(attractionJsonString);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return attraction;
+    }*/
     
     @RequestMapping("/getTripDeals")
     public String getTripDeals(@RequestParam String userName) {

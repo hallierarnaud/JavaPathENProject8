@@ -2,14 +2,11 @@ package tourGuide.proxies;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-import gpsUtil.location.Attraction;
-import gpsUtil.location.VisitedLocation;
-import tourGuide.user.User;
+import tourGuide.user.AttractionDTOResponse;
 
 @FeignClient(name = "microservice-gps", url = "localhost:9001")
 public interface GpsProxy {
@@ -32,6 +29,10 @@ public interface GpsProxy {
   String getVisitedLocations(@RequestParam String userName);
 
   @GetMapping(value = "/getAttractions")
-  String getAttractions();
+  List<AttractionDTOResponse> getAttractions();
+  /*@GetMapping(value = "/getAttraction")
+  AttractionDTORequest getAttraction(@RequestParam int attractionNumber);*/
+  /*@GetMapping(value = "/getAttraction")
+  Attraction getAttraction(@RequestParam int attractionNumber);*/
 
 }
