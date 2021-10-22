@@ -9,7 +9,8 @@ import lombok.Data;
 public class VisitedLocationDTOResponse {
 
   public UUID userId;
-  public LocationDTOResponse locationDTOResponse;
+  //Replace locationDTOResponse attribute name by locationsRequest to enable json mapping
+  public LocationDTOResponse locationRequest;
   public Date timeVisited;
 
 }
