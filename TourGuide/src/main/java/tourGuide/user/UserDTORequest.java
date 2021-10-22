@@ -10,7 +10,7 @@ import lombok.Data;
 import tripPricer.Provider;
 
 @Data
-public class UserDTOResponse {
+public class UserDTORequest {
 
   private UUID userId;
   private String userName;

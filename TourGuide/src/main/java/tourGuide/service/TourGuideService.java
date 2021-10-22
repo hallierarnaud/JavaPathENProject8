@@ -22,10 +22,9 @@ import gpsUtil.location.Attraction;
 import gpsUtil.location.Location;
 import gpsUtil.location.VisitedLocation;
 import tourGuide.helper.InternalTestHelper;
-import tourGuide.tracker.Tracker;
 import tourGuide.user.MapService;
 import tourGuide.user.User;
-import tourGuide.user.UserDTOResponse;
+import tourGuide.user.UserDTORequest;
 import tourGuide.user.UserReward;
 import tripPricer.Provider;
 import tripPricer.TripPricer;
@@ -73,10 +72,10 @@ public class TourGuideService {
 	}
 
 	//add a method to get userDTO from user
-	public UserDTOResponse getUserDTOResponse (String userName) {
+	public UserDTORequest getUserDTORequest (String userName) {
 		User user = internalUserMap.get(userName);
-		UserDTOResponse userDTOResponse = mapService.convertUserToUserDTOResponse(user);
-		return userDTOResponse;
+		UserDTORequest userDTORequest = mapService.convertUserToUserDTORequest(user);
+		return userDTORequest;
 	}
 	
 	public List<User> getAllUsers() {

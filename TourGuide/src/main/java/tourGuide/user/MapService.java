@@ -5,17 +5,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class MapService {
 
-  public UserDTOResponse convertUserToUserDTOResponse(User user) {
-    UserDTOResponse userDTOResponse = new UserDTOResponse();
-    userDTOResponse.setUserName(user.getUserName());
-    userDTOResponse.setPhoneNumber(user.getPhoneNumber());
-    userDTOResponse.setEmailAddress(user.getEmailAddress());
-    userDTOResponse.setLatestLocationTimestamp(user.getLatestLocationTimestamp());
-    userDTOResponse.setVisitedLocations(user.getVisitedLocations());
-    userDTOResponse.setUserRewards(user.getUserRewards());
-    userDTOResponse.setUserPreferences(user.getUserPreferences());
-    userDTOResponse.setTripDeals(user.getTripDeals());
-    return userDTOResponse;
+  public UserDTORequest convertUserToUserDTORequest(User user) {
+    UserDTORequest userDTORequest = new UserDTORequest();
+    userDTORequest.setUserName(user.getUserName());
+    userDTORequest.setPhoneNumber(user.getPhoneNumber());
+    userDTORequest.setEmailAddress(user.getEmailAddress());
+    userDTORequest.setLatestLocationTimestamp(user.getLatestLocationTimestamp());
+    userDTORequest.setVisitedLocations(user.getVisitedLocations());
+    userDTORequest.setUserRewards(user.getUserRewards());
+    userDTORequest.setUserPreferences(user.getUserPreferences());
+    userDTORequest.setTripDeals(user.getTripDeals());
+    return userDTORequest;
   }
 
 }
