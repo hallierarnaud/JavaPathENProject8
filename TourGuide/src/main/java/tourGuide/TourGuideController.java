@@ -15,6 +15,7 @@ import tourGuide.service.TourGuideService;
 import tourGuide.user.AttractionDTOResponse;
 import tourGuide.user.User;
 import tourGuide.user.UserDTOResponse;
+import tourGuide.user.VisitedLocationDTOResponse;
 import tripPricer.Provider;
 
 @RestController
@@ -88,8 +89,8 @@ public class TourGuideController {
     }
 
     @GetMapping("/getVisitedLocations")
-    public String getVisitedLocations(@RequestParam String userName) {
-        return JsonStream.serialize(gpsProxy.getVisitedLocations(userName));
+    public List<VisitedLocationDTOResponse> getVisitedLocations(@RequestParam String userName) {
+        return gpsProxy.getVisitedLocations(userName);
     }
 
     @GetMapping("/getAttractions")

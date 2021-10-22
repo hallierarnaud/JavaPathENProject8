@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 import tourGuide.user.AttractionDTOResponse;
+import tourGuide.user.VisitedLocationDTOResponse;
 
 @FeignClient(name = "microservice-gps", url = "localhost:9001")
 public interface GpsProxy {
@@ -26,7 +27,7 @@ public interface GpsProxy {
   String getNearbyAttractionThroughMS(@RequestParam String userName);
 
   @GetMapping(value = "/getVisitedLocations")
-  String getVisitedLocations(@RequestParam String userName);
+  List<VisitedLocationDTOResponse> getVisitedLocations(@RequestParam String userName);
 
   @GetMapping(value = "/getAttractions")
   List<AttractionDTOResponse> getAttractions();
