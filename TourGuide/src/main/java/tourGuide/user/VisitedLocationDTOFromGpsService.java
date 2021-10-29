@@ -9,8 +9,8 @@ import lombok.Data;
 public class VisitedLocationDTOFromGpsService {
 
   public UUID userId;
-  //Replace locationDTOResponse attribute name by locationsRequest to enable json mapping
-  public LocationDTOFromGpsService locationRequest;
+  //Replace locationDTOResponse attribute name by locationResponseToMainService to enable json mapping
+  public LocationDTOFromGpsService locationResponseToMainService;
   public Date timeVisited;
 
 }

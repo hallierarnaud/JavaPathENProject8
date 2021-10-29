@@ -1,6 +1,7 @@
 package tourGuide.user;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import lombok.Data;
@@ -13,5 +14,6 @@ public class UserDTOFromGpsService {
   private String phoneNumber;
   private String emailAddress;
   private Date latestLocationTimestamp;
+  private List<VisitedLocationDTOFromGpsService> visitedLocationResponseToMainServiceList;
 
 }
