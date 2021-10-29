@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 import tourGuide.user.AttractionDTOResponse;
+import tourGuide.user.UserDTO;
+import tourGuide.user.UserDTOFromGpsService;
 import tourGuide.user.VisitedLocationDTOResponse;
 
 @FeignClient(name = "microservice-gps", url = "localhost:9001")
@@ -35,5 +37,11 @@ public interface GpsProxy {
   AttractionDTORequest getAttraction(@RequestParam int attractionNumber);*/
   /*@GetMapping(value = "/getAttraction")
   Attraction getAttraction(@RequestParam int attractionNumber);*/
+
+
+
+  //Création de cette méthode
+  @GetMapping(value = "/getUserInGpsIsolation")
+  UserDTOFromGpsService getUserDTOFromApplicationThroughGps(@RequestParam String userName);
 
 }
