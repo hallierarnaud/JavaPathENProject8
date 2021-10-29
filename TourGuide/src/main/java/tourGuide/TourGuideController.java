@@ -12,11 +12,11 @@ import java.util.List;
 
 import tourGuide.proxies.GpsProxy;
 import tourGuide.service.TourGuideService;
-import tourGuide.user.AttractionDTOResponse;
+import tourGuide.user.AttractionDTOFromGpsService;
 import tourGuide.user.User;
 import tourGuide.user.UserDTO;
 import tourGuide.user.UserDTOFromGpsService;
-import tourGuide.user.VisitedLocationDTOResponse;
+import tourGuide.user.VisitedLocationDTOFromGpsService;
 import tripPricer.Provider;
 
 @RestController
@@ -90,12 +90,12 @@ public class TourGuideController {
     }
 
     @GetMapping("/getVisitedLocations")
-    public List<VisitedLocationDTOResponse> getVisitedLocations(@RequestParam String userName) {
+    public List<VisitedLocationDTOFromGpsService> getVisitedLocations(@RequestParam String userName) {
         return gpsProxy.getVisitedLocations(userName);
     }
 
     @GetMapping("/getAttractions")
-    public List<AttractionDTOResponse> getAttractions() {
+    public List<AttractionDTOFromGpsService> getAttractions() {
         return gpsProxy.getAttractions();
     }
     /*@GetMapping("/getAttractions")

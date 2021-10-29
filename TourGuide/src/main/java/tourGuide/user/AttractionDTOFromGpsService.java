@@ -5,7 +5,7 @@ import java.util.UUID;
 import lombok.Data;
 
 @Data
-public class AttractionDTOResponse {
+public class AttractionDTOFromGpsService {
 
   public UUID attractionId;
   public String attractionName;

@@ -6,10 +6,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-import tourGuide.user.AttractionDTOResponse;
-import tourGuide.user.UserDTO;
+import tourGuide.user.AttractionDTOFromGpsService;
 import tourGuide.user.UserDTOFromGpsService;
-import tourGuide.user.VisitedLocationDTOResponse;
+import tourGuide.user.VisitedLocationDTOFromGpsService;
 
 @FeignClient(name = "microservice-gps", url = "localhost:9001")
 public interface GpsProxy {
@@ -29,10 +28,10 @@ public interface GpsProxy {
   String getNearbyAttractionThroughMS(@RequestParam String userName);
 
   @GetMapping(value = "/getVisitedLocations")
-  List<VisitedLocationDTOResponse> getVisitedLocations(@RequestParam String userName);
+  List<VisitedLocationDTOFromGpsService> getVisitedLocations(@RequestParam String userName);
 
   @GetMapping(value = "/getAttractions")
-  List<AttractionDTOResponse> getAttractions();
+  List<AttractionDTOFromGpsService> getAttractions();
   /*@GetMapping(value = "/getAttraction")
   AttractionDTORequest getAttraction(@RequestParam int attractionNumber);*/
   /*@GetMapping(value = "/getAttraction")
