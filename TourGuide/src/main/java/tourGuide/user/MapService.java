@@ -5,13 +5,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class MapService {
 
-  public UserDTO convertUserToUserDTORequest(User user) {
-    UserDTO userDTO = new UserDTO();
-    userDTO.setUserId(user.getUserId());
-    userDTO.setUserName(user.getUserName());
-    userDTO.setPhoneNumber(user.getPhoneNumber());
-    userDTO.setEmailAddress(user.getEmailAddress());
-    return userDTO;
+  public UserDTOToGpsService convertUserToUserDTOToGpsService(User user) {
+    UserDTOToGpsService userDTOToGpsService = new UserDTOToGpsService();
+    userDTOToGpsService.setUserId(user.getUserId());
+    userDTOToGpsService.setUserName(user.getUserName());
+    userDTOToGpsService.setPhoneNumber(user.getPhoneNumber());
+    userDTOToGpsService.setEmailAddress(user.getEmailAddress());
+    return userDTOToGpsService;
   }
 
 }

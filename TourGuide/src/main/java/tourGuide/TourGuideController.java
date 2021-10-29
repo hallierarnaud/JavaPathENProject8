@@ -14,7 +14,7 @@ import tourGuide.proxies.GpsProxy;
 import tourGuide.service.TourGuideService;
 import tourGuide.user.AttractionDTOFromGpsService;
 import tourGuide.user.User;
-import tourGuide.user.UserDTO;
+import tourGuide.user.UserDTOToGpsService;
 import tourGuide.user.UserDTOFromGpsService;
 import tourGuide.user.VisitedLocationDTOFromGpsService;
 import tripPricer.Provider;
@@ -154,7 +154,7 @@ public class TourGuideController {
     //Utilisation de cet endpoint
     //add an endpoint to get userDTO directly through application
     @GetMapping("/getUserDTO")
-    public UserDTO getUserEndPoint(String userName) {
+    public UserDTOToGpsService getUserEndPoint(String userName) {
       return tourGuideService.getUserDTORequest(userName);
     }
 

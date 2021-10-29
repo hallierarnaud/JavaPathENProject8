@@ -5,7 +5,7 @@ import java.util.UUID;
 import lombok.Data;
 
 @Data
-public class UserDTO {
+public class UserDTOToGpsService {
 
   private UUID userId;
   private String userName;
