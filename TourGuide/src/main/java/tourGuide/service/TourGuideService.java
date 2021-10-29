@@ -72,7 +72,7 @@ public class TourGuideService {
 	}
 
 	//add a method to get userDTO from user
-	public UserDTOToGpsService getUserDTORequest (String userName) {
+	public UserDTOToGpsService getUserDTOToGpsService (String userName) {
 		User user = internalUserMap.get(userName);
 		UserDTOToGpsService userDTOToGpsService = mapService.convertUserToUserDTOToGpsService(user);
 		return userDTOToGpsService;

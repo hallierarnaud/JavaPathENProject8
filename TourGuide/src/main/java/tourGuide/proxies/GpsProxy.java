@@ -40,7 +40,7 @@ public interface GpsProxy {
 
 
   //Création de cette méthode
-  @GetMapping(value = "/getUserInGpsIsolation")
-  UserDTOFromGpsService getUserDTOFromApplicationThroughGps(@RequestParam String userName);
+  @GetMapping(value = "/userDTOFromGpsService")
+  UserDTOFromGpsService getUserDTOFromGpsService(@RequestParam String userName);
 
 }

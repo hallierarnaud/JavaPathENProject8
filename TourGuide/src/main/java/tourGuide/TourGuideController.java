@@ -153,9 +153,9 @@ public class TourGuideController {
 
     //Utilisation de cet endpoint
     //add an endpoint to get userDTO directly through application
-    @GetMapping("/getUserDTO")
-    public UserDTOToGpsService getUserEndPoint(String userName) {
-      return tourGuideService.getUserDTORequest(userName);
+    @GetMapping("/userDTOFromMainService")
+    public UserDTOToGpsService getUserDTOToGpsService(String userName) {
+      return tourGuideService.getUserDTOToGpsService(userName);
     }
 
 
@@ -173,9 +173,9 @@ public class TourGuideController {
 
 
     //Création de cette méthode
-    @GetMapping("/getUserInGpsIsolation")
-    public UserDTOFromGpsService getUserDTOFromApplicationThroughGps(@RequestParam String userName) {
-        return gpsProxy.getUserDTOFromApplicationThroughGps(userName);
+    @GetMapping("/userDTOFromGpsService")
+    public UserDTOFromGpsService getUserDTOFromGpsService(@RequestParam String userName) {
+        return gpsProxy.getUserDTOFromGpsService(userName);
     }
 
 }
