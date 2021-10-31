@@ -14,6 +14,6 @@ public class UserDTOFromGpsService {
   private String phoneNumber;
   private String emailAddress;
   private Date latestLocationTimestamp;
-  private List<VisitedLocationDTOFromGpsService> visitedLocationResponseToMainServiceList;
+  private List<VisitedLocationResponse> visitedLocationResponseToMainServiceList;
 
 }
