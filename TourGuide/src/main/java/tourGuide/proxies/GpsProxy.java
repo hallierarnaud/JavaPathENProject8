@@ -5,10 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.UUID;
 
-import tourGuide.user.AttractionDTOFromGpsService;
+import tourGuide.user.AttractionResponse;
 import tourGuide.user.UserDTOFromGpsService;
-import tourGuide.user.VisitedLocationDTOFromGpsService;
+import tourGuide.user.VisitedLocationResponse;
 
 @FeignClient(name = "microservice-gps", url = "localhost:9001")
 public interface GpsProxy {
@@ -28,10 +29,10 @@ public interface GpsProxy {
   String getNearbyAttractionThroughMS(@RequestParam String userName);
 
   @GetMapping(value = "/getVisitedLocations")
-  List<VisitedLocationDTOFromGpsService> getVisitedLocations(@RequestParam String userName);
+  List<VisitedLocationResponse> getVisitedLocations(@RequestParam String userName);
 
-  @GetMapping(value = "/getAttractions")
-  List<AttractionDTOFromGpsService> getAttractions();
+  /*@GetMapping(value = "/getAttractions")
+  List<AttractionDTOFromGpsService> getAttractions();*/
   /*@GetMapping(value = "/getAttraction")
   AttractionDTORequest getAttraction(@RequestParam int attractionNumber);*/
   /*@GetMapping(value = "/getAttraction")
@@ -42,5 +43,13 @@ public interface GpsProxy {
   //Création de cette méthode
   @GetMapping(value = "/userDTOFromGpsService")
   UserDTOFromGpsService getUserDTOFromGpsService(@RequestParam String userName);
+
+
+
+  @GetMapping(value = "/trackUserLocations")
+  VisitedLocationResponse getUserLocation(@RequestParam UUID userId);
+
+  @GetMapping(value = "/attractions")
+  List<AttractionResponse> getAttractions();
 
 }

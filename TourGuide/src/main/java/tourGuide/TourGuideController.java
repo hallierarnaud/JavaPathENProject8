@@ -9,14 +9,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 import tourGuide.proxies.GpsProxy;
 import tourGuide.service.TourGuideService;
-import tourGuide.user.AttractionDTOFromGpsService;
+import tourGuide.user.AttractionResponse;
 import tourGuide.user.User;
 import tourGuide.user.UserDTOToGpsService;
 import tourGuide.user.UserDTOFromGpsService;
-import tourGuide.user.VisitedLocationDTOFromGpsService;
+import tourGuide.user.VisitedLocationResponse;
 import tripPricer.Provider;
 
 @RestController
@@ -90,14 +91,14 @@ public class TourGuideController {
     }
 
     @GetMapping("/getVisitedLocations")
-    public List<VisitedLocationDTOFromGpsService> getVisitedLocations(@RequestParam String userName) {
+    public List<VisitedLocationResponse> getVisitedLocations(@RequestParam String userName) {
         return gpsProxy.getVisitedLocations(userName);
     }
 
-    @GetMapping("/getAttractions")
+    /*@GetMapping("/getAttractions")
     public List<AttractionDTOFromGpsService> getAttractions() {
         return gpsProxy.getAttractions();
-    }
+    }*/
     /*@GetMapping("/getAttractions")
     public JsonNode getAttractions() throws IOException {
         String attractions = JsonStream.serialize(gpsProxy.getAttractions());
@@ -176,6 +177,18 @@ public class TourGuideController {
     @GetMapping("/userDTOFromGpsService")
     public UserDTOFromGpsService getUserDTOFromGpsService(@RequestParam String userName) {
         return gpsProxy.getUserDTOFromGpsService(userName);
+    }
+
+
+
+    @GetMapping("/trackUserLocations")
+    public VisitedLocationResponse getUserLocation(@RequestParam UUID userId) {
+        return gpsProxy.getUserLocation(userId);
+    }
+
+    @GetMapping("/attractions")
+    public List<AttractionResponse> getAttractions() {
+        return gpsProxy.getAttractions();
     }
 
 }
