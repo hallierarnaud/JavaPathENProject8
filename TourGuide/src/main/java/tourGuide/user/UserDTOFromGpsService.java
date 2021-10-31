@@ -9,11 +9,11 @@ import lombok.Data;
 @Data
 public class UserDTOFromGpsService {
 
-  private UUID userId;
+  /*private UUID userId;
   private String userName;
   private String phoneNumber;
   private String emailAddress;
   private Date latestLocationTimestamp;
-  private List<VisitedLocationResponse> visitedLocationResponseToMainServiceList;
+  private List<VisitedLocationResponse> visitedLocationResponseToMainServiceList;*/
 
 }

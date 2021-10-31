@@ -14,7 +14,7 @@ import tourGuide.user.VisitedLocationResponse;
 @FeignClient(name = "microservice-gps", url = "localhost:9001")
 public interface GpsProxy {
 
-  @GetMapping(value = "/getLocation")
+  /*@GetMapping(value = "/getLocation")
   String getLocationThroughMS(@RequestParam String userName);
 
   //add an endpoint to get user's location without the back and forth
@@ -29,7 +29,7 @@ public interface GpsProxy {
   String getNearbyAttractionThroughMS(@RequestParam String userName);
 
   @GetMapping(value = "/getVisitedLocations")
-  List<VisitedLocationResponse> getVisitedLocations(@RequestParam String userName);
+  List<VisitedLocationResponse> getVisitedLocations(@RequestParam String userName);*/
 
   /*@GetMapping(value = "/getAttractions")
   List<AttractionDTOFromGpsService> getAttractions();*/
@@ -41,8 +41,8 @@ public interface GpsProxy {
 
 
   //Création de cette méthode
-  @GetMapping(value = "/userDTOFromGpsService")
-  UserDTOFromGpsService getUserDTOFromGpsService(@RequestParam String userName);
+  /*@GetMapping(value = "/userDTOFromGpsService")
+  UserDTOFromGpsService getUserDTOFromGpsService(@RequestParam String userName);*/
 
 
 
