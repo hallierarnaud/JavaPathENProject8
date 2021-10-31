@@ -32,8 +32,8 @@ import tripPricer.TripPricer;
 @Service
 public class TourGuideService {
 
-	@Autowired
-	private MapService mapService;
+	/*@Autowired
+	private MapService mapService;*/
 
 	private Logger logger = LoggerFactory.getLogger(TourGuideService.class);
 	private final GpsUtil gpsUtil;
@@ -72,11 +72,11 @@ public class TourGuideService {
 	}
 
 	//add a method to get userDTO from user
-	public UserDTOToGpsService getUserDTOToGpsService (String userName) {
+	/*public UserDTOToGpsService getUserDTOToGpsService (String userName) {
 		User user = internalUserMap.get(userName);
 		UserDTOToGpsService userDTOToGpsService = mapService.convertUserToUserDTOToGpsService(user);
 		return userDTOToGpsService;
-	}
+	}*/
 	
 	public List<User> getAllUsers() {
 		return internalUserMap.values().stream().collect(Collectors.toList());

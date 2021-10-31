@@ -40,7 +40,7 @@ public class TourGuideController {
 		return JsonStream.serialize(visitedLocation.location);
     }*/
 
-    @GetMapping("/getLocation")
+    /*@GetMapping("/getLocation")
     public String getLocationThroughMS(@RequestParam String userName) {
       return gpsProxy.getLocationThroughMS(userName);
     }
@@ -49,7 +49,7 @@ public class TourGuideController {
     @GetMapping("/getLocationWithUser")
     public String getLocationThroughMSWithUser(@RequestParam String userName) {
         return gpsProxy.getLocationThroughMSWithUser(userName);
-    }
+    }*/
     
     //  TODO: Change this method to no longer return a List of Attractions.
  	//  Instead: Get the closest five tourist attractions to the user - no matter how far away they are.
@@ -65,10 +65,10 @@ public class TourGuideController {
     	VisitedLocation visitedLocation = tourGuideService.getUserLocation(getUser(userName));
     	return JsonStream.serialize(tourGuideService.getNearByAttractions(visitedLocation));
     }*/
-    @GetMapping("/getNearbyAttractions")
+    /*@GetMapping("/getNearbyAttractions")
     public String getNearbyAttractions(@RequestParam String userName) {
         return JsonStream.serialize(gpsProxy.getNearbyAttractionThroughMS(userName));
-    }
+    }*/
     
     @RequestMapping("/getRewards") 
     public String getRewards(@RequestParam String userName) {
@@ -90,10 +90,10 @@ public class TourGuideController {
     	return JsonStream.serialize("");
     }
 
-    @GetMapping("/getVisitedLocations")
+    /*@GetMapping("/getVisitedLocations")
     public List<VisitedLocationResponse> getVisitedLocations(@RequestParam String userName) {
         return gpsProxy.getVisitedLocations(userName);
-    }
+    }*/
 
     /*@GetMapping("/getAttractions")
     public List<AttractionDTOFromGpsService> getAttractions() {
@@ -144,7 +144,7 @@ public class TourGuideController {
     	return tourGuideService.getUser(userName);
     }
 
-    //add an endpoint to get user directly through application
+    /*//add an endpoint to get user directly through application
     @GetMapping("getUserThroughApplication")
     public User getUserThroughApplication(String userName) {
       return tourGuideService.getUser(userName);
@@ -177,7 +177,7 @@ public class TourGuideController {
     @GetMapping("/userDTOFromGpsService")
     public UserDTOFromGpsService getUserDTOFromGpsService(@RequestParam String userName) {
         return gpsProxy.getUserDTOFromGpsService(userName);
-    }
+    }*/
 
 
 
