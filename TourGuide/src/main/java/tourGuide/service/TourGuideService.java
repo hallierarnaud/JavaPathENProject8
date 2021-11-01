@@ -1,5 +1,10 @@
 package tourGuide.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -12,21 +17,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import gpsUtil.GpsUtil;
-import gpsUtil.location.Attraction;
-import gpsUtil.location.Location;
-import gpsUtil.location.VisitedLocation;
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.proxies.GpsProxy;
 import tourGuide.user.AttractionResponse;
-import tourGuide.user.MapService;
 import tourGuide.user.User;
-import tourGuide.user.UserDTOToGpsService;
 import tourGuide.user.UserReward;
 import tourGuide.user.VisitedLocationResponse;
 import tripPricer.Provider;
@@ -42,14 +36,12 @@ public class TourGuideService {
 	private GpsProxy gpsProxy;
 
 	private Logger logger = LoggerFactory.getLogger(TourGuideService.class);
-	private final GpsUtil gpsUtil;
 	private final RewardsService rewardsService;
 	private final TripPricer tripPricer = new TripPricer();
 	//public final Tracker tracker;
 	boolean testMode = true;
 	
-	public TourGuideService(GpsUtil gpsUtil, RewardsService rewardsService) {
-		this.gpsUtil = gpsUtil;
+	public TourGuideService(RewardsService rewardsService) {
 		this.rewardsService = rewardsService;
 		
 		if(testMode) {
@@ -105,8 +97,7 @@ public class TourGuideService {
 	public VisitedLocationResponse trackUserLocation(User user) {
 		VisitedLocationResponse visitedLocationResponse = gpsProxy.getUserLocation(user.getUserId());
 		user.addToVisitedLocationResponseList(visitedLocationResponse);
-		//TODO
-		//rewardsService.calculateRewards(user);
+		rewardsService.calculateRewards(user);
 		return visitedLocationResponse;
 	}
 
@@ -142,18 +133,18 @@ public class TourGuideService {
 			String phone = "000";
 			String email = userName + "@tourGuide.com";
 			User user = new User(UUID.randomUUID(), userName, phone, email);
-			generateUserLocationHistory(user);
+			//generateUserLocationHistory(user);
 			
 			internalUserMap.put(userName, user);
 		});
 		logger.debug("Created " + InternalTestHelper.getInternalUserNumber() + " internal test users.");
 	}
 	
-	private void generateUserLocationHistory(User user) {
+	/*private void generateUserLocationHistory(User user) {
 		IntStream.range(0, 3).forEach(i-> {
 			user.addToVisitedLocations(new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()), getRandomTime()));
 		});
-	}
+	}*/
 	
 	private double generateRandomLongitude() {
 		double leftLimit = -180;
