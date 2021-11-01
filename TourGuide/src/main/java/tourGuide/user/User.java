@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import gpsUtil.location.VisitedLocation;
 import tripPricer.Provider;
 
 public class User {
@@ -14,7 +13,6 @@ public class User {
 	private String phoneNumber;
 	private String emailAddress;
 	private Date latestLocationTimestamp;
-	private List<VisitedLocation> visitedLocations = new ArrayList<>();
 	private List<VisitedLocationResponse> visitedLocationResponseList = new ArrayList<>();
 	private List<UserReward> userRewards = new ArrayList<>();
 	private UserPreferences userPreferences = new UserPreferences();
@@ -57,29 +55,21 @@ public class User {
 	public Date getLatestLocationTimestamp() {
 		return latestLocationTimestamp;
 	}
-	
-	public void addToVisitedLocations(VisitedLocation visitedLocation) {
-		visitedLocations.add(visitedLocation);
-	}
 
 	public void addToVisitedLocationResponseList(VisitedLocationResponse visitedLocationResponse) {
 		visitedLocationResponseList.add(visitedLocationResponse);
-	}
-	
-	public List<VisitedLocation> getVisitedLocations() {
-		return visitedLocations;
 	}
 
 	public List<VisitedLocationResponse> getVisitedLocationResponseList() {
 		return visitedLocationResponseList;
 	}
 	
-	public void clearVisitedLocations() {
-		visitedLocations.clear();
+	public void clearVisitedLocationResponseList() {
+		visitedLocationResponseList.clear();
 	}
 	
 	public void addUserReward(UserReward userReward) {
-		if(userRewards.stream().filter(r -> !r.attraction.attractionName.equals(userReward.attraction)).count() == 0) {
+		if(userRewards.stream().filter(r -> !r.attractionResponse.attractionName.equals(userReward.attractionResponse)).count() == 0) {
 			userRewards.add(userReward);
 		}
 	}
@@ -96,12 +86,8 @@ public class User {
 		this.userPreferences = userPreferences;
 	}
 
-	public VisitedLocation getLastVisitedLocation() {
-		//return Iterables.getLast(visitedLocations);
-		return visitedLocations.get(visitedLocations.size() - 1);
-	}
-
 	public VisitedLocationResponse getLastVisitedLocationResponse() {
+		//return Iterables.getLast(visitedLocationResponseList);
 		return visitedLocationResponseList.get(visitedLocationResponseList.size() - 1);
 	}
 	

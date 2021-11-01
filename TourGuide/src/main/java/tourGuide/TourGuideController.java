@@ -38,11 +38,6 @@ public class TourGuideController {
         return "Greetings from TourGuide!";
     }
     
-    @RequestMapping("/getRewards") 
-    public String getRewards(@RequestParam String userName) {
-    	return JsonStream.serialize(tourGuideService.getUserRewards(getUser(userName)));
-    }
-    
     @RequestMapping("/getAllCurrentLocations")
     public String getAllCurrentLocations() {
     	// TODO: Get a list of every user's most recent location as JSON
@@ -183,6 +178,11 @@ public class TourGuideController {
         User user = getUser(userName);
         VisitedLocationResponse visitedLocationResponse = tourGuideService.getUserLocationResponse(user);
     	return JsonStream.serialize(tourGuideService.getNearByAttractions(visitedLocationResponse));
+    }
+
+    @RequestMapping("/getRewards")
+    public String getRewards(@RequestParam String userName) {
+      return JsonStream.serialize(tourGuideService.getUserRewards(getUser(userName)));
     }
 
 }
