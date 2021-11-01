@@ -15,6 +15,7 @@ public class User {
 	private String emailAddress;
 	private Date latestLocationTimestamp;
 	private List<VisitedLocation> visitedLocations = new ArrayList<>();
+	private List<VisitedLocationResponse> visitedLocationResponseList = new ArrayList<>();
 	private List<UserReward> userRewards = new ArrayList<>();
 	private UserPreferences userPreferences = new UserPreferences();
 	private List<Provider> tripDeals = new ArrayList<>();
@@ -60,9 +61,17 @@ public class User {
 	public void addToVisitedLocations(VisitedLocation visitedLocation) {
 		visitedLocations.add(visitedLocation);
 	}
+
+	public void addToVisitedLocationResponseList(VisitedLocationResponse visitedLocationResponse) {
+		visitedLocationResponseList.add(visitedLocationResponse);
+	}
 	
 	public List<VisitedLocation> getVisitedLocations() {
 		return visitedLocations;
+	}
+
+	public List<VisitedLocationResponse> getVisitedLocationResponseList() {
+		return visitedLocationResponseList;
 	}
 	
 	public void clearVisitedLocations() {
@@ -90,6 +99,10 @@ public class User {
 	public VisitedLocation getLastVisitedLocation() {
 		//return Iterables.getLast(visitedLocations);
 		return visitedLocations.get(visitedLocations.size() - 1);
+	}
+
+	public VisitedLocationResponse getLastVisitedLocationResponse() {
+		return visitedLocationResponseList.get(visitedLocationResponseList.size() - 1);
 	}
 	
 	public void setTripDeals(List<Provider> tripDeals) {
