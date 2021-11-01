@@ -29,16 +29,12 @@ import tripPricer.TripPricer;
 @Service
 public class TourGuideService {
 
-	/*@Autowired
-	private MapService mapService;*/
-
 	@Autowired
 	private GpsProxy gpsProxy;
 
 	private Logger logger = LoggerFactory.getLogger(TourGuideService.class);
 	private final RewardsService rewardsService;
 	private final TripPricer tripPricer = new TripPricer();
-	//public final Tracker tracker;
 	boolean testMode = true;
 	
 	public TourGuideService(RewardsService rewardsService) {
@@ -50,8 +46,6 @@ public class TourGuideService {
 			initializeInternalUsers();
 			logger.debug("Finished initializing users");
 		}
-		//tracker = new Tracker(this);
-		//addShutDownHook();
 	}
 	
 	public List<UserReward> getUserRewards(User user) {
@@ -68,13 +62,6 @@ public class TourGuideService {
 	public User getUser(String userName) {
 		return internalUserMap.get(userName);
 	}
-
-	//add a method to get userDTO from user
-	/*public UserDTOToGpsService getUserDTOToGpsService (String userName) {
-		User user = internalUserMap.get(userName);
-		UserDTOToGpsService userDTOToGpsService = mapService.convertUserToUserDTOToGpsService(user);
-		return userDTOToGpsService;
-	}*/
 	
 	public List<User> getAllUsers() {
 		return internalUserMap.values().stream().collect(Collectors.toList());
@@ -111,14 +98,6 @@ public class TourGuideService {
 		return nearbyAttractions;
 	}
 	
-	/*private void addShutDownHook() {
-		Runtime.getRuntime().addShutdownHook(new Thread() { 
-		      public void run() {
-		        tracker.stopTracking();
-		      } 
-		    }); 
-	}*/
-	
 	/**********************************************************************************
 	 * 
 	 * Methods Below: For Internal Testing
@@ -139,7 +118,8 @@ public class TourGuideService {
 		});
 		logger.debug("Created " + InternalTestHelper.getInternalUserNumber() + " internal test users.");
 	}
-	
+
+	//TODO
 	/*private void generateUserLocationHistory(User user) {
 		IntStream.range(0, 3).forEach(i-> {
 			user.addToVisitedLocations(new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()), getRandomTime()));
