@@ -46,7 +46,6 @@ public class Tracker extends Thread {
 			logger.debug("Begin Tracker. Tracking " + users.size() + " users.");
 			stopWatch.start();
 
-			//users.forEach(u -> tourGuideService.trackUserLocation(u));
 			TrackerThreadPool trackerThreadPool = new TrackerThreadPool(tourGuideService);
 			trackerThreadPool.run();
 

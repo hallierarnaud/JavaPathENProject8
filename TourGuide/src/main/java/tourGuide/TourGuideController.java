@@ -12,12 +12,9 @@ import java.util.List;
 import java.util.UUID;
 
 import tourGuide.proxies.GpsProxy;
-import tourGuide.service.RewardsService;
 import tourGuide.service.TourGuideService;
 import tourGuide.user.AttractionResponse;
 import tourGuide.user.User;
-import tourGuide.user.UserDTOToGpsService;
-import tourGuide.user.UserDTOFromGpsService;
 import tourGuide.user.VisitedLocationResponse;
 import tripPricer.Provider;
 
@@ -29,9 +26,6 @@ public class TourGuideController {
 
 	@Autowired
     private GpsProxy gpsProxy;
-
-	@Autowired
-    private RewardsService rewardsService;
 	
     @RequestMapping("/")
     public String index() {
@@ -53,50 +47,6 @@ public class TourGuideController {
     	return JsonStream.serialize("");
     }
 
-    /*@GetMapping("/getVisitedLocations")
-    public List<VisitedLocationResponse> getVisitedLocations(@RequestParam String userName) {
-        return gpsProxy.getVisitedLocations(userName);
-    }*/
-
-    /*@GetMapping("/getAttractions")
-    public List<AttractionDTOFromGpsService> getAttractions() {
-        return gpsProxy.getAttractions();
-    }*/
-    /*@GetMapping("/getAttractions")
-    public JsonNode getAttractions() throws IOException {
-        String attractions = JsonStream.serialize(gpsProxy.getAttractions());
-        JsonNode node = null;
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            node = mapper.readTree(attractions);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return node;
-    }*/
-    /*@GetMapping("/getAttraction")
-    public AttractionDTORequest getAttraction(@RequestParam int attractionNumber) {
-        return gpsProxy.getAttraction(attractionNumber);
-    }*/
-    /*@GetMapping("/getAttraction")
-    public Attraction getAttraction(@RequestParam int attractionNumber) throws IOException {
-        String attractionJsonString = JsonStream.serialize(gpsProxy.getAttraction(attractionNumber));
-        Attraction attraction = new ObjectMapper().readValue(attractionJsonString, Attraction.class);
-        return attraction;
-    }*/
-    /*@GetMapping("/getAttraction")
-    public JsonNode getAttraction(@RequestParam int attractionNumber) throws IOException {
-        String attractionJsonString = JsonStream.serialize(gpsProxy.getAttraction(attractionNumber));
-        JsonNode attraction = null;
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            attraction = mapper.readTree(attractionJsonString);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return attraction;
-    }*/
-    
     @RequestMapping("/getTripDeals")
     public String getTripDeals(@RequestParam String userName) {
     	List<Provider> providers = tourGuideService.getTripDeals(getUser(userName));
@@ -106,41 +56,6 @@ public class TourGuideController {
     private User getUser(String userName) {
     	return tourGuideService.getUser(userName);
     }
-
-    /*//add an endpoint to get user directly through application
-    @GetMapping("getUserThroughApplication")
-    public User getUserThroughApplication(String userName) {
-      return tourGuideService.getUser(userName);
-    }
-
-
-
-    //Utilisation de cet endpoint
-    //add an endpoint to get userDTO directly through application
-    @GetMapping("/userDTOFromMainService")
-    public UserDTOToGpsService getUserDTOToGpsService(String userName) {
-      return tourGuideService.getUserDTOToGpsService(userName);
-    }
-
-
-
-    //add two endpoints to check communication between microservice and application
-    @GetMapping("/getLocationCheck")
-    public String getLocationCheckThroughMS(@RequestParam String userName) {
-      return gpsProxy.getLocationCheckThroughMS(userName);
-    }
-    @GetMapping("/getUserNameCheck")
-    public String getUserNameCheckThroughApplication() {
-      return "Lucas&Nathan";
-    }
-
-
-
-    //Création de cette méthode
-    @GetMapping("/userDTOFromGpsService")
-    public UserDTOFromGpsService getUserDTOFromGpsService(@RequestParam String userName) {
-        return gpsProxy.getUserDTOFromGpsService(userName);
-    }*/
 
 
     //My endpoints
@@ -154,6 +69,7 @@ public class TourGuideController {
     public List<AttractionResponse> getAttractions() {
         return gpsProxy.getAttractions();
     }
+
 
     //Initial endpoints reproduction
 
