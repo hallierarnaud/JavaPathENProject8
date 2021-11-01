@@ -37,25 +37,6 @@ public class TourGuideController {
     public String index() {
         return "Greetings from TourGuide!";
     }
-
-    //  TODO: Change this method to no longer return a List of Attractions.
- 	//  Instead: Get the closest five tourist attractions to the user - no matter how far away they are.
- 	//  Return a new JSON object that contains:
-    	// Name of Tourist attraction, 
-        // Tourist attractions lat/long, 
-        // The user's location lat/long, 
-        // The distance in miles between the user's location and each of the attractions.
-        // The reward points for visiting each Attraction.
-        //    Note: Attraction reward points can be gathered from RewardsCentral
-    /*@RequestMapping("/getNearbyAttractions")
-    public String getNearbyAttractions(@RequestParam String userName) {
-    	VisitedLocation visitedLocation = tourGuideService.getUserLocation(getUser(userName));
-    	return JsonStream.serialize(tourGuideService.getNearByAttractions(visitedLocation));
-    }*/
-    /*@GetMapping("/getNearbyAttractions")
-    public String getNearbyAttractions(@RequestParam String userName) {
-        return JsonStream.serialize(gpsProxy.getNearbyAttractionThroughMS(userName));
-    }*/
     
     @RequestMapping("/getRewards") 
     public String getRewards(@RequestParam String userName) {
@@ -186,6 +167,22 @@ public class TourGuideController {
         User user = getUser(userName);
         VisitedLocationResponse visitedLocationResponse = tourGuideService.getUserLocationResponse(user);
         return JsonStream.serialize(visitedLocationResponse.getLocationResponse());
+    }
+
+    //  TODO: Change this method to no longer return a List of Attractions.
+    //  Instead: Get the closest five tourist attractions to the user - no matter how far away they are.
+    //  Return a new JSON object that contains:
+        // Name of Tourist attraction,
+        // Tourist attractions lat/long,
+        // The user's location lat/long,
+        // The distance in miles between the user's location and each of the attractions.
+        // The reward points for visiting each Attraction.
+        //    Note: Attraction reward points can be gathered from RewardsCentral
+    @RequestMapping("/getNearbyAttractions")
+    public String getNearbyAttractions(@RequestParam String userName) {
+        User user = getUser(userName);
+        VisitedLocationResponse visitedLocationResponse = tourGuideService.getUserLocationResponse(user);
+    	return JsonStream.serialize(tourGuideService.getNearByAttractions(visitedLocationResponse));
     }
 
 }

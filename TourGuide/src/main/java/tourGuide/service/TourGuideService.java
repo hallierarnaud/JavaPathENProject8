@@ -23,6 +23,7 @@ import gpsUtil.location.Location;
 import gpsUtil.location.VisitedLocation;
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.proxies.GpsProxy;
+import tourGuide.user.AttractionResponse;
 import tourGuide.user.MapService;
 import tourGuide.user.User;
 import tourGuide.user.UserDTOToGpsService;
@@ -104,18 +105,18 @@ public class TourGuideService {
 	public VisitedLocationResponse trackUserLocation(User user) {
 		VisitedLocationResponse visitedLocationResponse = gpsProxy.getUserLocation(user.getUserId());
 		user.addToVisitedLocationResponseList(visitedLocationResponse);
-		rewardsService.calculateRewards(user);
+		//TODO
+		//rewardsService.calculateRewards(user);
 		return visitedLocationResponse;
 	}
 
-	public List<Attraction> getNearByAttractions(VisitedLocation visitedLocation) {
-		List<Attraction> nearbyAttractions = new ArrayList<>();
-		for(Attraction attraction : gpsUtil.getAttractions()) {
-			if(rewardsService.isWithinAttractionProximity(attraction, visitedLocation.location)) {
-				nearbyAttractions.add(attraction);
+	public List<AttractionResponse> getNearByAttractions(VisitedLocationResponse visitedLocationResponse) {
+		List<AttractionResponse> nearbyAttractions = new ArrayList<>();
+		for(AttractionResponse attractionResponse : gpsProxy.getAttractions()) {
+			if(rewardsService.isWithinAttractionProximity(attractionResponse, visitedLocationResponse.locationResponse)) {
+				nearbyAttractions.add(attractionResponse);
 			}
 		}
-		
 		return nearbyAttractions;
 	}
 	

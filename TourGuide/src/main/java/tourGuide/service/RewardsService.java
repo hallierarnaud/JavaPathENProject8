@@ -9,8 +9,11 @@ import gpsUtil.location.Attraction;
 import gpsUtil.location.Location;
 import gpsUtil.location.VisitedLocation;
 import rewardCentral.RewardCentral;
+import tourGuide.user.AttractionResponse;
+import tourGuide.user.LocationResponse;
 import tourGuide.user.User;
 import tourGuide.user.UserReward;
+import tourGuide.user.VisitedLocationResponse;
 
 @Service
 public class RewardsService {
@@ -19,7 +22,7 @@ public class RewardsService {
 	// proximity in miles
     private int defaultProximityBuffer = 10;
 	private int proximityBuffer = defaultProximityBuffer;
-	private int attractionProximityRange = 200;
+	private int attractionProximityRange = 20000;
 	private final GpsUtil gpsUtil;
 	private final RewardCentral rewardsCentral;
 	
@@ -35,8 +38,9 @@ public class RewardsService {
 	public void setDefaultProximityBuffer() {
 		proximityBuffer = defaultProximityBuffer;
 	}
-	
-	public void calculateRewards(User user) {
+
+	//TODO
+	/*public void calculateRewards(User user) {
 		List<VisitedLocation> userLocations = user.getVisitedLocations();
 		List<Attraction> attractions = gpsUtil.getAttractions();
 		
@@ -49,23 +53,24 @@ public class RewardsService {
 				}
 			}
 		}
-	}
+	}*/
 	
-	public boolean isWithinAttractionProximity(Attraction attraction, Location location) {
-		return getDistance(attraction, location) > attractionProximityRange ? false : true;
+	public boolean isWithinAttractionProximity(AttractionResponse attractionResponse, LocationResponse locationResponse) {
+		return getDistance(attractionResponse.latitude, attractionResponse.longitude, locationResponse) > attractionProximityRange ? false : true;
 	}
-	
-	private boolean nearAttraction(VisitedLocation visitedLocation, Attraction attraction) {
-		return getDistance(attraction, visitedLocation.location) > proximityBuffer ? false : true;
-	}
+
+	//TODO
+	/*private boolean nearAttraction(VisitedLocationResponse visitedLocationResponse, AttractionResponse attractionResponse) {
+		return getDistance(attractionResponse.locationResponse, visitedLocationResponse.locationResponse) > proximityBuffer ? false : true;
+	}*/
 	
 	private int getRewardPoints(Attraction attraction, User user) {
 		return rewardsCentral.getAttractionRewardPoints(attraction.attractionId, user.getUserId());
 	}
 	
-	public double getDistance(Location loc1, Location loc2) {
-        double lat1 = Math.toRadians(loc1.latitude);
-        double lon1 = Math.toRadians(loc1.longitude);
+	public double getDistance(double latitude, double longitude, LocationResponse loc2) {
+        double lat1 = Math.toRadians(latitude);
+        double lon1 = Math.toRadians(longitude);
         double lat2 = Math.toRadians(loc2.latitude);
         double lon2 = Math.toRadians(loc2.longitude);
 
