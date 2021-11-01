@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 import tourGuide.proxies.GpsProxy;
+import tourGuide.service.RewardsService;
 import tourGuide.service.TourGuideService;
 import tourGuide.user.AttractionResponse;
 import tourGuide.user.User;
@@ -28,29 +29,15 @@ public class TourGuideController {
 
 	@Autowired
     private GpsProxy gpsProxy;
+
+	@Autowired
+    private RewardsService rewardsService;
 	
     @RequestMapping("/")
     public String index() {
         return "Greetings from TourGuide!";
     }
-    
-    /*@RequestMapping("/getLocation")
-    public String getLocation(@RequestParam String userName) {
-    	VisitedLocation visitedLocation = tourGuideService.getUserLocation(getUser(userName));
-		return JsonStream.serialize(visitedLocation.location);
-    }*/
 
-    /*@GetMapping("/getLocation")
-    public String getLocationThroughMS(@RequestParam String userName) {
-      return gpsProxy.getLocationThroughMS(userName);
-    }
-
-    //add an endpoint to get user's location without the back and forth
-    @GetMapping("/getLocationWithUser")
-    public String getLocationThroughMSWithUser(@RequestParam String userName) {
-        return gpsProxy.getLocationThroughMSWithUser(userName);
-    }*/
-    
     //  TODO: Change this method to no longer return a List of Attractions.
  	//  Instead: Get the closest five tourist attractions to the user - no matter how far away they are.
  	//  Return a new JSON object that contains:
@@ -180,6 +167,7 @@ public class TourGuideController {
     }*/
 
 
+    //My endpoints
 
     @GetMapping("/trackUserLocations")
     public VisitedLocationResponse getUserLocation(@RequestParam UUID userId) {
@@ -189,6 +177,15 @@ public class TourGuideController {
     @GetMapping("/attractions")
     public List<AttractionResponse> getAttractions() {
         return gpsProxy.getAttractions();
+    }
+
+    //Initial endpoints reproduction
+
+    @RequestMapping("/getLocation")
+    public String getLocation(@RequestParam String userName) {
+        User user = getUser(userName);
+        VisitedLocationResponse visitedLocationResponse = tourGuideService.getUserLocationResponse(user);
+        return JsonStream.serialize(visitedLocationResponse.getLocationResponse());
     }
 
 }

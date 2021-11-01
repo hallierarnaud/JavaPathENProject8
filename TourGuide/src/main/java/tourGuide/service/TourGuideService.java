@@ -22,10 +22,12 @@ import gpsUtil.location.Attraction;
 import gpsUtil.location.Location;
 import gpsUtil.location.VisitedLocation;
 import tourGuide.helper.InternalTestHelper;
+import tourGuide.proxies.GpsProxy;
 import tourGuide.user.MapService;
 import tourGuide.user.User;
 import tourGuide.user.UserDTOToGpsService;
 import tourGuide.user.UserReward;
+import tourGuide.user.VisitedLocationResponse;
 import tripPricer.Provider;
 import tripPricer.TripPricer;
 
@@ -34,6 +36,9 @@ public class TourGuideService {
 
 	/*@Autowired
 	private MapService mapService;*/
+
+	@Autowired
+	private GpsProxy gpsProxy;
 
 	private Logger logger = LoggerFactory.getLogger(TourGuideService.class);
 	private final GpsUtil gpsUtil;
@@ -60,11 +65,11 @@ public class TourGuideService {
 		return user.getUserRewards();
 	}
 	
-	public VisitedLocation getUserLocation(User user) {
-		VisitedLocation visitedLocation = (user.getVisitedLocations().size() > 0) ?
-			user.getLastVisitedLocation() :
+	public VisitedLocationResponse getUserLocationResponse(User user) {
+		VisitedLocationResponse visitedLocationResponse = (user.getVisitedLocationResponseList().size() > 0) ?
+			user.getLastVisitedLocationResponse() :
 			trackUserLocation(user);
-		return visitedLocation;
+		return visitedLocationResponse;
 	}
 	
 	public User getUser(String userName) {
@@ -96,11 +101,11 @@ public class TourGuideService {
 		return providers;
 	}
 	
-	public VisitedLocation trackUserLocation(User user) {
-		VisitedLocation visitedLocation = gpsUtil.getUserLocation(user.getUserId());
-		user.addToVisitedLocations(visitedLocation);
+	public VisitedLocationResponse trackUserLocation(User user) {
+		VisitedLocationResponse visitedLocationResponse = gpsProxy.getUserLocation(user.getUserId());
+		user.addToVisitedLocationResponseList(visitedLocationResponse);
 		rewardsService.calculateRewards(user);
-		return visitedLocation;
+		return visitedLocationResponse;
 	}
 
 	public List<Attraction> getNearByAttractions(VisitedLocation visitedLocation) {
