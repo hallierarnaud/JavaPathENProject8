@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import rewardCentral.RewardCentral;
 import tourGuide.proxies.GpsProxy;
+import tourGuide.proxies.RewardsProxy;
 import tourGuide.user.AttractionResponse;
 import tourGuide.user.LocationResponse;
 import tourGuide.user.User;
@@ -19,17 +19,15 @@ public class RewardsService {
 	@Autowired
 	private GpsProxy gpsProxy;
 
+	@Autowired
+	private RewardsProxy rewardsProxy;
+
     private static final double STATUTE_MILES_PER_NAUTICAL_MILE = 1.15077945;
 
 	// proximity in miles
     private int defaultProximityBuffer = 10;
 	private int proximityBuffer = defaultProximityBuffer;
 	private int attractionProximityRange = 20000;
-	private final RewardCentral rewardsCentral;
-	
-	public RewardsService(RewardCentral rewardCentral) {
-		this.rewardsCentral = rewardCentral;
-	}
 	
 	public void setProximityBuffer(int proximityBuffer) {
 		this.proximityBuffer = proximityBuffer;
@@ -62,8 +60,8 @@ public class RewardsService {
 		return getDistance(attractionResponse.latitude, attractionResponse.longitude, visitedLocationResponse.locationResponse) > proximityBuffer ? false : true;
 	}
 	
-	private int getRewardPoints(AttractionResponse attractionResponse, User user) {
-		return rewardsCentral.getAttractionRewardPoints(attractionResponse.attractionId, user.getUserId());
+	public int getRewardPoints(AttractionResponse attractionResponse, User user) {
+		return rewardsProxy.getRewards(attractionResponse.attractionId, user.getUserId());
 	}
 	
 	public double getDistance(double latitude, double longitude, LocationResponse loc2) {

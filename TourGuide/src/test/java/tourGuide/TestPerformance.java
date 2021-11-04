@@ -1,25 +1,20 @@
 package tourGuide;
 
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
 import org.apache.commons.lang3.time.StopWatch;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import rewardCentral.RewardCentral;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.service.RewardsService;
 import tourGuide.service.TourGuideService;
 import tourGuide.tracker.TrackerThreadPool;
 import tourGuide.user.User;
-import tourGuide.user.UserReward;
+
+import static org.junit.Assert.assertTrue;
 
 public class TestPerformance {
 	
@@ -48,10 +43,10 @@ public class TestPerformance {
 	public void highVolumeTrackLocation() {
 		Locale.setDefault(Locale.ENGLISH);
 		//GpsUtil gpsUtil = new GpsUtil();
-		RewardsService rewardsService = new RewardsService(new RewardCentral());
+		//RewardsService rewardsService = new RewardsService(new RewardCentral());
 		// Users should be incremented up to 100,000, and test finishes within 15 minutes
 		InternalTestHelper.setInternalUserNumber(100);
-		TourGuideService tourGuideService = new TourGuideService(rewardsService);
+		//TourGuideService tourGuideService = new TourGuideService(rewardsService);
 
 		/*List<User> allUsers = new ArrayList<>();
 		allUsers = tourGuideService.getAllUsers();*/
@@ -61,8 +56,8 @@ public class TestPerformance {
 		/*for(User user : allUsers) {
 			tourGuideService.trackUserLocation(user);
 		}*/
-		TrackerThreadPool trackerThreadPool = new TrackerThreadPool(tourGuideService);
-		trackerThreadPool.run();
+		//TrackerThreadPool trackerThreadPool = new TrackerThreadPool(tourGuideService);
+		//trackerThreadPool.run();
 		stopWatch.stop();
 		//tourGuideService.tracker.stopTracking();
 
@@ -75,19 +70,19 @@ public class TestPerformance {
 	public void highVolumeGetRewards() {
 		Locale.setDefault(Locale.ENGLISH);
 		//GpsUtil gpsUtil = new GpsUtil();
-		RewardsService rewardsService = new RewardsService(new RewardCentral());
+		//RewardsService rewardsService = new RewardsService(new RewardCentral());
 		// Users should be incremented up to 100,000, and test finishes within 20 minutes
 		InternalTestHelper.setInternalUserNumber(10);
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
-		TourGuideService tourGuideService = new TourGuideService(rewardsService);
+		//TourGuideService tourGuideService = new TourGuideService(rewardsService);
 		
 	    //Attraction attraction = gpsUtil.getAttractions().get(0);
 		List<User> allUsers = new ArrayList<>();
-		allUsers = tourGuideService.getAllUsers();
+		//allUsers = tourGuideService.getAllUsers();
 		for (User user : allUsers) {
 			//user.addToVisitedLocations(new VisitedLocation(user.getUserId(), attraction, new Date()));
-			rewardsService.calculateRewards(user);
+			//rewardsService.calculateRewards(user);
 		}
 		//allUsers.forEach(u -> u.addToVisitedLocations(new VisitedLocation(u.getUserId(), attraction, new Date())));
 

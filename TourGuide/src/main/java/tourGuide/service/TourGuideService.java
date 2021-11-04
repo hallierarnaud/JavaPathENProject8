@@ -81,7 +81,6 @@ public class TourGuideService {
 		return providers;
 	}
 
-	//TODO : use rewards-microservice to calculate rewards
 	public VisitedLocationResponse trackUserLocation(User user) {
 		VisitedLocationResponse visitedLocationResponse = gpsProxy.getUserLocation(user.getUserId());
 		user.addToVisitedLocationResponseList(visitedLocationResponse);
@@ -89,7 +88,6 @@ public class TourGuideService {
 		return visitedLocationResponse;
 	}
 
-	//TODO : use rewards-microservice to determine if user is within attractions proximity
 	public List<AttractionResponse> getNearByAttractions(VisitedLocationResponse visitedLocationResponse) {
 		List<AttractionResponse> nearbyAttractions = new ArrayList<>();
 		for(AttractionResponse attractionResponse : gpsProxy.getAttractions()) {
