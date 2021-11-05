@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 import tourGuide.proxies.GpsProxy;
+import tourGuide.proxies.RewardsProxy;
 import tourGuide.service.TourGuideService;
 import tourGuide.user.AttractionResponse;
 import tourGuide.user.User;
@@ -26,6 +27,9 @@ public class TourGuideController {
 
 	@Autowired
     private GpsProxy gpsProxy;
+
+	@Autowired
+    private RewardsProxy rewardsProxy;
 	
     @RequestMapping("/")
     public String index() {
@@ -70,6 +74,10 @@ public class TourGuideController {
         return gpsProxy.getAttractions();
     }
 
+    @GetMapping("/rewards")
+    public int getRewards(@RequestParam UUID attractionId, @RequestParam UUID userId) {
+        return rewardsProxy.getRewards(attractionId, userId);
+    }
 
     //Initial endpoints reproduction
 
