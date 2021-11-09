@@ -15,6 +15,7 @@ import tourGuide.proxies.GpsProxy;
 import tourGuide.proxies.RewardsProxy;
 import tourGuide.service.TourGuideService;
 import tourGuide.user.AttractionResponse;
+import tourGuide.user.ProviderResponse;
 import tourGuide.user.User;
 import tourGuide.user.VisitedLocationResponse;
 import tripPricer.Provider;
@@ -49,12 +50,6 @@ public class TourGuideController {
     	//     }
     	
     	return JsonStream.serialize("");
-    }
-
-    @RequestMapping("/getTripDeals")
-    public String getTripDeals(@RequestParam String userName) {
-    	List<Provider> providers = tourGuideService.getTripDeals(getUser(userName));
-    	return JsonStream.serialize(providers);
     }
     
     private User getUser(String userName) {
@@ -107,6 +102,12 @@ public class TourGuideController {
     @RequestMapping("/getRewards")
     public String getRewards(@RequestParam String userName) {
       return JsonStream.serialize(tourGuideService.getUserRewards(getUser(userName)));
+    }
+
+    @RequestMapping("/getTripDeals")
+    public String getTripDeals(@RequestParam String userName) {
+        List<ProviderResponse> providers = tourGuideService.getTripDeals(getUser(userName));
+        return JsonStream.serialize(providers);
     }
 
 }
