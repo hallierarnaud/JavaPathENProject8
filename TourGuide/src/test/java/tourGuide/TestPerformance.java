@@ -1,6 +1,6 @@
 package tourGuide;
 
-import org.apache.commons.lang3.time.StopWatch;
+import org.apache.commons.lang.time.StopWatch;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class TestPerformance {
 	public void highVolumeTrackLocation() {
 		Locale.setDefault(Locale.ENGLISH);
 		//GpsUtil gpsUtil = new GpsUtil();
-		//RewardsService rewardsService = new RewardsService(new RewardCentral());
+		RewardsService rewardsService = new RewardsService();
 		// Users should be incremented up to 100,000, and test finishes within 15 minutes
 		InternalTestHelper.setInternalUserNumber(100);
 		//TourGuideService tourGuideService = new TourGuideService(rewardsService);

@@ -18,7 +18,6 @@ import tourGuide.user.AttractionResponse;
 import tourGuide.user.ProviderResponse;
 import tourGuide.user.User;
 import tourGuide.user.VisitedLocationResponse;
-import tripPricer.Provider;
 
 @RestController
 public class TourGuideController {
