@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import tripPricer.Provider;
-
 public class User {
 	private final UUID userId;
 	private final String userName;
@@ -16,7 +14,7 @@ public class User {
 	private List<VisitedLocationResponse> visitedLocationResponseList = new ArrayList<>();
 	private List<UserReward> userRewards = new ArrayList<>();
 	private UserPreferences userPreferences = new UserPreferences();
-	private List<Provider> tripDeals = new ArrayList<>();
+	private List<ProviderResponse> tripDeals = new ArrayList<>();
 	public User(UUID userId, String userName, String phoneNumber, String emailAddress) {
 		this.userId = userId;
 		this.userName = userName;
@@ -91,11 +89,11 @@ public class User {
 		return visitedLocationResponseList.get(visitedLocationResponseList.size() - 1);
 	}
 	
-	public void setTripDeals(List<Provider> tripDeals) {
+	public void setTripDeals(List<ProviderResponse> tripDeals) {
 		this.tripDeals = tripDeals;
 	}
 	
-	public List<Provider> getTripDeals() {
+	public List<ProviderResponse> getTripDeals() {
 		return tripDeals;
 	}
 
