@@ -12,11 +12,12 @@ import java.util.List;
 import java.util.UUID;
 
 import tourGuide.proxies.GpsProxy;
+import tourGuide.proxies.RewardsProxy;
 import tourGuide.service.TourGuideService;
 import tourGuide.user.AttractionResponse;
+import tourGuide.user.ProviderResponse;
 import tourGuide.user.User;
 import tourGuide.user.VisitedLocationResponse;
-import tripPricer.Provider;
 
 @RestController
 public class TourGuideController {
@@ -26,6 +27,9 @@ public class TourGuideController {
 
 	@Autowired
     private GpsProxy gpsProxy;
+
+	@Autowired
+    private RewardsProxy rewardsProxy;
 	
     @RequestMapping("/")
     public String index() {
@@ -46,12 +50,6 @@ public class TourGuideController {
     	
     	return JsonStream.serialize("");
     }
-
-    @RequestMapping("/getTripDeals")
-    public String getTripDeals(@RequestParam String userName) {
-    	List<Provider> providers = tourGuideService.getTripDeals(getUser(userName));
-    	return JsonStream.serialize(providers);
-    }
     
     private User getUser(String userName) {
     	return tourGuideService.getUser(userName);
@@ -70,6 +68,10 @@ public class TourGuideController {
         return gpsProxy.getAttractions();
     }
 
+    @GetMapping("/rewards")
+    public int getRewards(@RequestParam UUID attractionId, @RequestParam UUID userId) {
+        return rewardsProxy.getRewards(attractionId, userId);
+    }
 
     //Initial endpoints reproduction
 
@@ -99,6 +101,12 @@ public class TourGuideController {
     @RequestMapping("/getRewards")
     public String getRewards(@RequestParam String userName) {
       return JsonStream.serialize(tourGuideService.getUserRewards(getUser(userName)));
+    }
+
+    @RequestMapping("/getTripDeals")
+    public String getTripDeals(@RequestParam String userName) {
+        List<ProviderResponse> providers = tourGuideService.getTripDeals(getUser(userName));
+        return JsonStream.serialize(providers);
     }
 
 }

@@ -19,12 +19,12 @@ import java.util.stream.IntStream;
 
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.proxies.GpsProxy;
+import tourGuide.proxies.PricerProxy;
 import tourGuide.user.AttractionResponse;
+import tourGuide.user.ProviderResponse;
 import tourGuide.user.User;
 import tourGuide.user.UserReward;
 import tourGuide.user.VisitedLocationResponse;
-import tripPricer.Provider;
-import tripPricer.TripPricer;
 
 @Service
 public class TourGuideService {
@@ -32,9 +32,11 @@ public class TourGuideService {
 	@Autowired
 	private GpsProxy gpsProxy;
 
+	@Autowired
+	private PricerProxy pricerProxy;
+
 	private Logger logger = LoggerFactory.getLogger(TourGuideService.class);
 	private final RewardsService rewardsService;
-	private final TripPricer tripPricer = new TripPricer();
 	boolean testMode = true;
 	
 	public TourGuideService(RewardsService rewardsService) {
@@ -73,14 +75,14 @@ public class TourGuideService {
 		}
 	}
 	
-	public List<Provider> getTripDeals(User user) {
-		int cumulatativeRewardPoints = user.getUserRewards().stream().mapToInt(i -> i.getRewardPoints()).sum();
-		List<Provider> providers = tripPricer.getPrice(tripPricerApiKey, user.getUserId(), user.getUserPreferences().getNumberOfAdults(), 
-				user.getUserPreferences().getNumberOfChildren(), user.getUserPreferences().getTripDuration(), cumulatativeRewardPoints);
+	public List<ProviderResponse> getTripDeals(User user) {
+		int cumulativeRewardPoints = user.getUserRewards().stream().mapToInt(i -> i.getRewardPoints()).sum();
+		List<ProviderResponse> providers = pricerProxy.getTripDeals(user.getUserId(), user.getUserPreferences().getNumberOfAdults(),
+				user.getUserPreferences().getNumberOfChildren(), user.getUserPreferences().getTripDuration(), cumulativeRewardPoints);
 		user.setTripDeals(providers);
 		return providers;
 	}
-	
+
 	public VisitedLocationResponse trackUserLocation(User user) {
 		VisitedLocationResponse visitedLocationResponse = gpsProxy.getUserLocation(user.getUserId());
 		user.addToVisitedLocationResponseList(visitedLocationResponse);
