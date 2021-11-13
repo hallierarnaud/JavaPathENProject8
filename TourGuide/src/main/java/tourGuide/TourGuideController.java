@@ -50,7 +50,7 @@ public class TourGuideController {
     	
     	return JsonStream.serialize("");
     }
-    
+
     private User getUser(String userName) {
     	return tourGuideService.getUser(userName);
     }
@@ -71,6 +71,11 @@ public class TourGuideController {
     @GetMapping("/rewards")
     public int getRewards(@RequestParam UUID attractionId, @RequestParam UUID userId) {
         return rewardsProxy.getRewards(attractionId, userId);
+    }
+
+    @GetMapping("/users")
+    public User getUserByUserName(@RequestParam String userName) {
+        return tourGuideService.getUser(userName);
     }
 
     //Initial endpoints reproduction
