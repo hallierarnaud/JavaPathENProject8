@@ -20,11 +20,11 @@ import java.util.stream.IntStream;
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.proxies.GpsProxy;
 import tourGuide.proxies.PricerProxy;
-import tourGuide.user.AttractionResponse;
-import tourGuide.user.ProviderResponse;
-import tourGuide.user.User;
-import tourGuide.user.UserReward;
-import tourGuide.user.VisitedLocationResponse;
+import tourGuide.object.AttractionResponse;
+import tourGuide.object.ProviderResponse;
+import tourGuide.object.User;
+import tourGuide.object.UserReward;
+import tourGuide.object.VisitedLocationResponse;
 
 @Service
 public class TourGuideService {

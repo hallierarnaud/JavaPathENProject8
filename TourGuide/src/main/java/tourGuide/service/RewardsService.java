@@ -7,11 +7,11 @@ import java.util.List;
 
 import tourGuide.proxies.GpsProxy;
 import tourGuide.proxies.RewardsProxy;
-import tourGuide.user.AttractionResponse;
-import tourGuide.user.LocationResponse;
-import tourGuide.user.User;
-import tourGuide.user.UserReward;
-import tourGuide.user.VisitedLocationResponse;
+import tourGuide.object.AttractionResponse;
+import tourGuide.object.LocationResponse;
+import tourGuide.object.User;
+import tourGuide.object.UserReward;
+import tourGuide.object.VisitedLocationResponse;
 
 @Service
 public class RewardsService {

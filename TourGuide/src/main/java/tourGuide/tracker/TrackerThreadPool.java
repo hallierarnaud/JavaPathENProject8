@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import tourGuide.service.TourGuideService;
-import tourGuide.user.User;
+import tourGuide.object.User;
 
 public class TrackerThreadPool extends Thread {
 

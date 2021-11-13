@@ -14,10 +14,10 @@ import java.util.UUID;
 import tourGuide.proxies.GpsProxy;
 import tourGuide.proxies.RewardsProxy;
 import tourGuide.service.TourGuideService;
-import tourGuide.user.AttractionResponse;
-import tourGuide.user.ProviderResponse;
-import tourGuide.user.User;
-import tourGuide.user.VisitedLocationResponse;
+import tourGuide.object.AttractionResponse;
+import tourGuide.object.ProviderResponse;
+import tourGuide.object.User;
+import tourGuide.object.VisitedLocationResponse;
 
 @RestController
 public class TourGuideController {

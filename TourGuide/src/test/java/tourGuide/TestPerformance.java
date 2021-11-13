@@ -10,9 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.service.RewardsService;
-import tourGuide.service.TourGuideService;
-import tourGuide.tracker.TrackerThreadPool;
-import tourGuide.user.User;
+import tourGuide.object.User;
 
 import static org.junit.Assert.assertTrue;
 

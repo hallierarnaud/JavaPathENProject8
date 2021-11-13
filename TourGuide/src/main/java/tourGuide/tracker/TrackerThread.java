@@ -1,7 +1,7 @@
 package tourGuide.tracker;
 
 import tourGuide.service.TourGuideService;
-import tourGuide.user.User;
+import tourGuide.object.User;
 
 public class TrackerThread extends Thread {
 
