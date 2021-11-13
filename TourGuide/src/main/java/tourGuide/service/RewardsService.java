@@ -63,7 +63,8 @@ public class RewardsService {
 	public int getRewardPoints(AttractionResponse attractionResponse, User user) {
 		return rewardsProxy.getRewards(attractionResponse.attractionId, user.getUserId());
 	}
-	
+
+	//TODO: correct this calculation and reset attractionProximityRange to 200
 	public double getDistance(double latitude, double longitude, LocationResponse loc2) {
         double lat1 = Math.toRadians(latitude);
         double lon1 = Math.toRadians(longitude);
