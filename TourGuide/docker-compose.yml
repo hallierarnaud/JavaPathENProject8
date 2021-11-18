@@ -1,0 +1,19 @@
+version: "3"
+services:
+  monapp:
+    image: performance
+    depends_on:
+      - rewardmicroservice
+    ports:
+      - "8080:8080"
+    networks:
+      - monreseau
+  rewardmicroservice:
+    image: rewardmicroservice
+    ports:
+      - "9002:9002"
+    networks:
+      - monreseau
+
+networks:
+  monreseau:
