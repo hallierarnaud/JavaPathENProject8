@@ -2,19 +2,43 @@ package tourGuide;
 
 import org.apache.commons.lang.time.StopWatch;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import tourGuide.helper.InternalTestHelper;
+import tourGuide.object.AttractionResponse;
+import tourGuide.object.LocationResponse;
+import tourGuide.object.VisitedLocationResponse;
+import tourGuide.proxies.GpsProxy;
+import tourGuide.proxies.RewardsProxy;
 import tourGuide.service.RewardsService;
 import tourGuide.object.User;
+import tourGuide.service.TourGuideService;
+import tourGuide.tracker.TrackerThreadPool;
 
 import static org.junit.Assert.assertTrue;
 
+@RunWith(MockitoJUnitRunner.class)
 public class TestPerformance {
+
+	@Mock
+	private GpsProxy gpsProxy;
+
+	@Mock
+	private RewardsProxy rewardsProxy;
+
+	@InjectMocks
+	private RewardsService rewardsService;
 	
 	/*
 	 * A note on performance improvements:
@@ -35,62 +59,55 @@ public class TestPerformance {
      *     highVolumeGetRewards: 100,000 users within 20 minutes:
 	 *          assertTrue(TimeUnit.MINUTES.toSeconds(20) >= TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()));
 	 */
-	
-	//@Ignore
+
 	@Test
 	public void highVolumeTrackLocation() {
 		Locale.setDefault(Locale.ENGLISH);
-		//GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService();
 		// Users should be incremented up to 100,000, and test finishes within 15 minutes
 		InternalTestHelper.setInternalUserNumber(100);
-		//TourGuideService tourGuideService = new TourGuideService(rewardsService);
-
-		/*List<User> allUsers = new ArrayList<>();
-		allUsers = tourGuideService.getAllUsers();*/
+		TourGuideService tourGuideService = new TourGuideService(rewardsService);
 		
 	    StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
-		/*for(User user : allUsers) {
-			tourGuideService.trackUserLocation(user);
-		}*/
-		//TrackerThreadPool trackerThreadPool = new TrackerThreadPool(tourGuideService);
-		//trackerThreadPool.run();
+		TrackerThreadPool trackerThreadPool = new TrackerThreadPool(tourGuideService);
+		trackerThreadPool.run();
 		stopWatch.stop();
-		//tourGuideService.tracker.stopTracking();
 
 		System.out.println("highVolumeTrackLocation: Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + " seconds."); 
 		assertTrue(TimeUnit.MINUTES.toSeconds(15) >= TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()));
 	}
-	
-	//@Ignore
+
 	@Test
 	public void highVolumeGetRewards() {
 		Locale.setDefault(Locale.ENGLISH);
-		//GpsUtil gpsUtil = new GpsUtil();
-		//RewardsService rewardsService = new RewardsService(new RewardCentral());
 		// Users should be incremented up to 100,000, and test finishes within 20 minutes
-		InternalTestHelper.setInternalUserNumber(10);
+		InternalTestHelper.setInternalUserNumber(1000);
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
-		//TourGuideService tourGuideService = new TourGuideService(rewardsService);
-		
-	    //Attraction attraction = gpsUtil.getAttractions().get(0);
-		List<User> allUsers = new ArrayList<>();
-		//allUsers = tourGuideService.getAllUsers();
-		for (User user : allUsers) {
-			//user.addToVisitedLocations(new VisitedLocation(user.getUserId(), attraction, new Date()));
-			//rewardsService.calculateRewards(user);
-		}
-		//allUsers.forEach(u -> u.addToVisitedLocations(new VisitedLocation(u.getUserId(), attraction, new Date())));
+		TourGuideService tourGuideService = new TourGuideService(rewardsService);
 
-	    //allUsers.forEach(u -> rewardsService.calculateRewards(u));
+		LocationResponse locationResponse = new LocationResponse();
+		locationResponse.setLatitude(33.817595D);
+		locationResponse.setLongitude(-117.922008D);
+
+		AttractionResponse attractionResponse = new AttractionResponse(UUID.randomUUID(),"Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D);
+		List<AttractionResponse> attractionResponseList = new ArrayList<>();
+		attractionResponseList.add(attractionResponse);
+		Mockito.when(gpsProxy.getAttractions()).thenReturn(attractionResponseList);
+
+		List<User> allUsers = new ArrayList<>();
+		allUsers = tourGuideService.getAllUsers();
+		for (User user : allUsers) {
+			user.addToVisitedLocationResponseList(new VisitedLocationResponse(user.getUserId(), locationResponse, new Date()));
+			Mockito.when(rewardsProxy.getRewards(attractionResponse.attractionId, user.getUserId())).thenReturn(100);
+			rewardsService.calculateRewards(user);
+		}
 
 		for(User user : allUsers) {
 			assertTrue(user.getUserRewards().size() > 0);
 		}
 		stopWatch.stop();
-		//tourGuideService.tracker.stopTracking();
 
 		System.out.println("highVolumeGetRewards: Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + " seconds."); 
 		assertTrue(TimeUnit.MINUTES.toSeconds(20) >= TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()));
