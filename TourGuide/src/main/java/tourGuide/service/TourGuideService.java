@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import tourGuide.helper.InternalTestHelper;
+import tourGuide.object.LocationResponse;
 import tourGuide.proxies.GpsProxy;
 import tourGuide.proxies.PricerProxy;
 import tourGuide.object.AttractionResponse;
@@ -114,19 +115,18 @@ public class TourGuideService {
 			String phone = "000";
 			String email = userName + "@tourGuide.com";
 			User user = new User(UUID.randomUUID(), userName, phone, email);
-			//generateUserLocationHistory(user);
+			generateUserLocationHistory(user);
 			
 			internalUserMap.put(userName, user);
 		});
 		logger.debug("Created " + InternalTestHelper.getInternalUserNumber() + " internal test users.");
 	}
 
-	//TODO
-	/*private void generateUserLocationHistory(User user) {
+	private void generateUserLocationHistory(User user) {
 		IntStream.range(0, 3).forEach(i-> {
-			user.addToVisitedLocations(new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()), getRandomTime()));
+			user.addToVisitedLocationResponseList(new VisitedLocationResponse(user.getUserId(), new LocationResponse(generateRandomLatitude(), generateRandomLongitude()), getRandomTime()));
 		});
-	}*/
+	}
 	
 	private double generateRandomLongitude() {
 		double leftLimit = -180;
