@@ -27,7 +27,7 @@ public class RewardsService {
 	// proximity in miles
     private int defaultProximityBuffer = 10;
 	private int proximityBuffer = defaultProximityBuffer;
-	private int attractionProximityRange = 20000;
+	private int attractionProximityRange = 200;
 	
 	public void setProximityBuffer(int proximityBuffer) {
 		this.proximityBuffer = proximityBuffer;
@@ -64,15 +64,14 @@ public class RewardsService {
 		return rewardsProxy.getRewards(attractionResponse.attractionId, user.getUserId());
 	}
 
-	//TODO: correct this calculation and reset attractionProximityRange to 200
 	public double getDistance(double latitude, double longitude, LocationResponse loc2) {
         double lat1 = Math.toRadians(latitude);
         double lon1 = Math.toRadians(longitude);
         double lat2 = Math.toRadians(loc2.latitude);
         double lon2 = Math.toRadians(loc2.longitude);
 
-        double angle = Math.acos(Math.sin(lat1) * Math.sin(lat2)
-                               + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2));
+        double angle = Math.acos(Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2))
+                               + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(lon1 - lon2)));
 
         double nauticalMiles = 60 * Math.toDegrees(angle);
         double statuteMiles = STATUTE_MILES_PER_NAUTICAL_MILE * nauticalMiles;
