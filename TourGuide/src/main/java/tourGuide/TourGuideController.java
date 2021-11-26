@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.UUID;
 
+import tourGuide.object.NearbyAttraction;
 import tourGuide.proxies.GpsProxy;
 import tourGuide.proxies.RewardsProxy;
 import tourGuide.service.TourGuideService;
@@ -87,20 +88,10 @@ public class TourGuideController {
         return JsonStream.serialize(visitedLocationResponse.getLocationResponse());
     }
 
-    //  TODO: Change this method to no longer return a List of Attractions.
-    //  Instead: Get the closest five tourist attractions to the user - no matter how far away they are.
-    //  Return a new JSON object that contains:
-        // Name of Tourist attraction,
-        // Tourist attractions lat/long,
-        // The user's location lat/long,
-        // The distance in miles between the user's location and each of the attractions.
-        // The reward points for visiting each Attraction.
-        //    Note: Attraction reward points can be gathered from RewardsCentral
     @RequestMapping("/getNearbyAttractions")
-    public String getNearbyAttractions(@RequestParam String userName) {
+    public List<NearbyAttraction> getNearbyAttractions(@RequestParam String userName) {
         User user = getUser(userName);
-        VisitedLocationResponse visitedLocationResponse = tourGuideService.getUserLocationResponse(user);
-    	return JsonStream.serialize(tourGuideService.getNearByAttractions(visitedLocationResponse));
+    	return tourGuideService.getNearByAttractions(user);
     }
 
     @RequestMapping("/getRewards")

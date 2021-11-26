@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -18,14 +19,15 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import tourGuide.helper.InternalTestHelper;
-import tourGuide.object.LocationResponse;
-import tourGuide.proxies.GpsProxy;
-import tourGuide.proxies.PricerProxy;
 import tourGuide.object.AttractionResponse;
+import tourGuide.object.LocationResponse;
+import tourGuide.object.NearbyAttraction;
 import tourGuide.object.ProviderResponse;
 import tourGuide.object.User;
 import tourGuide.object.UserReward;
 import tourGuide.object.VisitedLocationResponse;
+import tourGuide.proxies.GpsProxy;
+import tourGuide.proxies.PricerProxy;
 
 @Service
 public class TourGuideService {
@@ -91,14 +93,23 @@ public class TourGuideService {
 		return visitedLocationResponse;
 	}
 
-	public List<AttractionResponse> getNearByAttractions(VisitedLocationResponse visitedLocationResponse) {
-		List<AttractionResponse> nearbyAttractions = new ArrayList<>();
+	public List<NearbyAttraction> getNearByAttractions(User user) {
+		VisitedLocationResponse visitedLocationResponse = getUserLocationResponse(user);
+		List<NearbyAttraction> nearbyAttractions = new ArrayList<>();
 		for(AttractionResponse attractionResponse : gpsProxy.getAttractions()) {
-			if(rewardsService.isWithinAttractionProximity(attractionResponse, visitedLocationResponse.locationResponse)) {
-				nearbyAttractions.add(attractionResponse);
-			}
+			NearbyAttraction nearbyAttraction = new NearbyAttraction();
+			nearbyAttraction.setAttractionName(attractionResponse.attractionName);
+			nearbyAttraction.setAttractionLatitude(attractionResponse.latitude);
+			nearbyAttraction.setAttractionLongitude(attractionResponse.longitude);
+			nearbyAttraction.setTouristLatitude(visitedLocationResponse.locationResponse.latitude);
+			nearbyAttraction.setTouristLongitude(visitedLocationResponse.locationResponse.longitude);
+			nearbyAttraction.setDistanceBetweenAttractionAndTourist((int) rewardsService.getDistance(attractionResponse.latitude,
+							attractionResponse.longitude, visitedLocationResponse.locationResponse));
+			nearbyAttraction.setRewardsPoint(rewardsService.getRewardPoints(attractionResponse, user));
+			nearbyAttractions.add(nearbyAttraction);
 		}
-		return nearbyAttractions;
+		Collections.sort(nearbyAttractions);
+		return nearbyAttractions.subList(0, 5);
 	}
 	
 	/**********************************************************************************
