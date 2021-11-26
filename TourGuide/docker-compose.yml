@@ -1,19 +1,14 @@
 version: "3"
 services:
   monapp:
+    build: .
     image: performance
     depends_on:
       - rewardmicroservice
     ports:
       - "8080:8080"
-    networks:
-      - monreseau
   rewardmicroservice:
+    build: ../../RewardIsolation/TourGuide
     image: rewardmicroservice
     ports:
       - "9002:9002"
-    networks:
-      - monreseau
-
-networks:
-  monreseau:
