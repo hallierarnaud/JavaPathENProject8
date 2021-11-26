@@ -98,7 +98,8 @@ public class TestTourGuideService {
 		assertEquals(5, attractions.size());
 	}*/
 
-	/*public void getTripDeals() {
+	/*@Test
+	public void getTripDeals() {
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 		InternalTestHelper.setInternalUserNumber(0);
@@ -113,5 +114,9 @@ public class TestTourGuideService {
 		assertEquals(10, providers.size());
 	}*/
 	
-	
+	/*@Test
+	public void getAllCurrentLocations() {
+
+	}*/
+
 }

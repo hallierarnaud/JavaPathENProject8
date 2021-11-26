@@ -77,6 +77,17 @@ public class TourGuideService {
 			internalUserMap.put(user.getUserName(), user);
 		}
 	}
+
+	public List<VisitedLocationResponse> getAllCurrentLocations() {
+		List<User> users = getAllUsers();
+		List<VisitedLocationResponse> allCurrentVisitedLocationResponseList = new ArrayList<>();
+		for(User user : users) {
+			List<VisitedLocationResponse> currentVisitedLocationResponseList = user.getVisitedLocationResponseList();
+			Collections.sort(currentVisitedLocationResponseList);
+			allCurrentVisitedLocationResponseList.add(currentVisitedLocationResponseList.get(0));
+		}
+		return allCurrentVisitedLocationResponseList;
+	}
 	
 	public List<ProviderResponse> getTripDeals(User user) {
 		int cumulativeRewardPoints = user.getUserRewards().stream().mapToInt(i -> i.getRewardPoints()).sum();
