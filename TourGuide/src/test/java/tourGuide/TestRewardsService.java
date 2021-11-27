@@ -6,7 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -72,28 +71,21 @@ public class TestRewardsService {
 
         assertTrue(rewardsService.isWithinAttractionProximity(attractionResponse, locationResponse));
 	}
-	
-	//@Ignore // Needs fixed - can throw ConcurrentModificationException
+
 	@Test
 	public void nearAllAttractions() {
+		rewardsService.setProximityBuffer(Integer.MAX_VALUE);
+
+		InternalTestHelper.setInternalUserNumber(1);
+		TourGuideService tourGuideService = new TourGuideService(rewardsService);
+
 		AttractionResponse attractionResponse = new AttractionResponse(UUID.randomUUID(),"Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D);
 		List<AttractionResponse> attractionResponseList = new ArrayList<>();
 		attractionResponseList.add(attractionResponse);
 		Mockito.when(gpsProxy.getAttractions()).thenReturn(attractionResponseList);
 
-		InternalTestHelper.setInternalUserNumber(1);
-		TourGuideService tourGuideService = new TourGuideService(rewardsService);
-
-		LocationResponse locationResponse = new LocationResponse();
-		locationResponse.setLatitude(33.817595D);
-		locationResponse.setLongitude(-117.922008D);
-		VisitedLocationResponse visitedLocationResponse = new VisitedLocationResponse(tourGuideService.getAllUsers().get(0).getUserId(), locationResponse, new Date());
-		tourGuideService.getAllUsers().get(0).addToVisitedLocationResponseList(visitedLocationResponse);
-
-		Mockito.when(rewardsProxy.getRewards(attractionResponse.attractionId, tourGuideService.getAllUsers().get(0).getUserId())).thenReturn(100);
-
 		rewardsService.calculateRewards(tourGuideService.getAllUsers().get(0));
-		List<UserReward> userRewards = tourGuideService.getAllUsers().get(0).getUserRewards();
+		List<UserReward> userRewards = tourGuideService.getUserRewards(tourGuideService.getAllUsers().get(0));
 		assertEquals(gpsProxy.getAttractions().size(), userRewards.size());
 	}
 	
