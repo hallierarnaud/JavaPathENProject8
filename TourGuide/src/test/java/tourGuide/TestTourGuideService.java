@@ -1,32 +1,54 @@
 package tourGuide;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import tourGuide.helper.InternalTestHelper;
+import tourGuide.object.LocationResponse;
+import tourGuide.object.ProviderResponse;
 import tourGuide.object.User;
+import tourGuide.object.VisitedLocationResponse;
+import tourGuide.proxies.GpsProxy;
+import tourGuide.proxies.PricerProxy;
 import tourGuide.service.RewardsService;
 import tourGuide.service.TourGuideService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+@RunWith(MockitoJUnitRunner.class)
 public class TestTourGuideService {
 
-	/*@Test
+	@Mock
+	private GpsProxy gpsProxy;
+
+	@Mock
+	private PricerProxy pricerProxy;
+
+	@InjectMocks
+	private TourGuideService tourGuideService;
+
+	@Test
 	public void getUserLocation() {
-		GpsUtil gpsUtil = new GpsUtil();
-		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 		InternalTestHelper.setInternalUserNumber(0);
-		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
 		
 		User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
-		VisitedLocationResponse visitedLocationResponse = tourGuideService.trackUserLocation(user);
-		//tourGuideService.tracker.stopTracking();
+		VisitedLocationResponse visitedLocationResponse = new VisitedLocationResponse(user.getUserId(), new LocationResponse(0.0, 0.0), new Date());
+		Mockito.when(gpsProxy.getUserLocation(user.getUserId())).thenReturn(visitedLocationResponse);
+
+		tourGuideService.trackUserLocation(user);
+
 		assertTrue(visitedLocationResponse.userId.equals(user.getUserId()));
-	}*/
+	}
 	
 	@Test
 	public void addUser() {
@@ -64,24 +86,8 @@ public class TestTourGuideService {
 		assertTrue(allUsers.contains(user));
 		assertTrue(allUsers.contains(user2));
 	}
-	
-	/*@Test
-	public void trackUser() {
-		GpsUtil gpsUtil = new GpsUtil();
-		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
-		InternalTestHelper.setInternalUserNumber(0);
-		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
-		
-		User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
-		VisitedLocationResponse visitedLocationResponse = tourGuideService.trackUserLocation(user);
 
-		//tourGuideService.tracker.stopTracking();
-		
-		assertEquals(user.getUserId(), visitedLocationResponse.userId);
-	}*/
-	
-	/*@Ignore // Not yet implemented
-	@Test
+	/*@Test
 	public void getNearbyAttractions() {
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
@@ -98,21 +104,25 @@ public class TestTourGuideService {
 		assertEquals(5, attractions.size());
 	}*/
 
-	/*@Test
+	@Test
 	public void getTripDeals() {
-		GpsUtil gpsUtil = new GpsUtil();
-		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 		InternalTestHelper.setInternalUserNumber(0);
-		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
 		
 		User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
+		List<ProviderResponse> providerResponseList = new ArrayList<>();
+		ProviderResponse providerResponse = new ProviderResponse();
+		providerResponse.setTripId(UUID.randomUUID());
+		providerResponse.setName("TestProvider");
+		providerResponse.setPrice(100);
+		providerResponseList.add(providerResponse);
+		Mockito.when(pricerProxy.getTripDeals(user.getUserId(), user.getUserPreferences().getNumberOfAdults(),
+						user.getUserPreferences().getNumberOfChildren(), user.getUserPreferences().getTripDuration(),
+						user.getUserRewards().stream().mapToInt(i -> i.getRewardPoints()).sum())).thenReturn(providerResponseList);
 
-		List<Provider> providers = tourGuideService.getTripDeals(user);
-
-		//tourGuideService.tracker.stopTracking();
+		tourGuideService.getTripDeals(user);
 		
-		assertEquals(10, providers.size());
-	}*/
+		assertEquals(1, providerResponseList.size());
+	}
 	
 	/*@Test
 	public void getAllCurrentLocations() {
