@@ -34,13 +34,16 @@ public class TestTourGuideService {
 	@Mock
 	private PricerProxy pricerProxy;
 
+	@Mock
+	private RewardsService rewardsService;
+
 	@InjectMocks
-	private TourGuideService tourGuideService;
+	private final TourGuideService tourGuideService = new TourGuideService(rewardsService);
 
 	@Test
 	public void getUserLocation() {
 		InternalTestHelper.setInternalUserNumber(0);
-		
+
 		User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
 		VisitedLocationResponse visitedLocationResponse = new VisitedLocationResponse(user.getUserId(), new LocationResponse(0.0, 0.0), new Date());
 		Mockito.when(gpsProxy.getUserLocation(user.getUserId())).thenReturn(visitedLocationResponse);

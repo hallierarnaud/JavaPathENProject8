@@ -39,9 +39,10 @@ public class TourGuideService {
 	private PricerProxy pricerProxy;
 
 	private Logger logger = LoggerFactory.getLogger(TourGuideService.class);
-	private final RewardsService rewardsService;
+	private RewardsService rewardsService;
 	boolean testMode = true;
-	
+
+	@Autowired
 	public TourGuideService(RewardsService rewardsService) {
 		this.rewardsService = rewardsService;
 		
