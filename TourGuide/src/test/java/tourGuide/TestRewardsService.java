@@ -40,6 +40,7 @@ public class TestRewardsService {
 
 	@Test
 	public void userGetRewards() {
+		// GIVEN
 		InternalTestHelper.setInternalUserNumber(0);
 
         AttractionResponse attractionResponse = new AttractionResponse(UUID.randomUUID(),"Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D);
@@ -56,26 +57,30 @@ public class TestRewardsService {
 
         Mockito.when(rewardsProxy.getRewards(attractionResponse.attractionId, user.getUserId())).thenReturn(100);
 
+        // WHEN
 		rewardsService.calculateRewards(user);
 		List<UserReward> userRewards = user.getUserRewards();
+
+		// THEN
 		assertTrue(userRewards.size() == 1);
 	}
 	
 	@Test
 	public void isWithinAttractionProximity() {
+		// GIVEN
         AttractionResponse attractionResponse = new AttractionResponse(UUID.randomUUID(),"Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D);
-
 		LocationResponse locationResponse = new LocationResponse();
         locationResponse.setLatitude(33.817595D);
         locationResponse.setLongitude(-117.922008D);
 
+        // THEN
         assertTrue(rewardsService.isWithinAttractionProximity(attractionResponse, locationResponse));
 	}
 
 	@Test
 	public void nearAllAttractions() {
+		// GIVEN
 		rewardsService.setProximityBuffer(Integer.MAX_VALUE);
-
 		InternalTestHelper.setInternalUserNumber(1);
 		TourGuideService tourGuideService = new TourGuideService(rewardsService);
 
@@ -84,8 +89,11 @@ public class TestRewardsService {
 		attractionResponseList.add(attractionResponse);
 		Mockito.when(gpsProxy.getAttractions()).thenReturn(attractionResponseList);
 
+		// WHEN
 		rewardsService.calculateRewards(tourGuideService.getAllUsers().get(0));
 		List<UserReward> userRewards = tourGuideService.getUserRewards(tourGuideService.getAllUsers().get(0));
+
+		// THEN
 		assertEquals(gpsProxy.getAttractions().size(), userRewards.size());
 	}
 	
