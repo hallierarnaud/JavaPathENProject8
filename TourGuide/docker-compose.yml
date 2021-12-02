@@ -4,11 +4,23 @@ services:
     build: .
     image: performance
     depends_on:
+      - gpsmicroservice
       - rewardmicroservice
+      - pricermicroservice
     ports:
       - "8080:8080"
+  gpsmicroservice:
+    build: ../../GpsIsolation/TourGuide
+    image: gpsmicroservice
+    ports:
+      - "9001:9001"
   rewardmicroservice:
     build: ../../RewardIsolation/TourGuide
     image: rewardmicroservice
     ports:
       - "9002:9002"
+  pricermicroservice:
+    build: ../../PricerIsolation/TourGuide
+    image: pricermicroservice
+    ports:
+      - "9003:9003"

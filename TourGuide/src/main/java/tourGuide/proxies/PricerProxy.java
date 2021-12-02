@@ -9,7 +9,7 @@ import java.util.UUID;
 
 import tourGuide.object.ProviderResponse;
 
-@FeignClient(name = "microservice-pricer", url = "localhost:9003")
+@FeignClient(name = "microservice-pricer", url = "${host.pricer}")
 public interface PricerProxy {
 
   @GetMapping(value = "/tripDeals")

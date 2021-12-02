@@ -10,7 +10,7 @@ import java.util.UUID;
 import tourGuide.object.AttractionResponse;
 import tourGuide.object.VisitedLocationResponse;
 
-@FeignClient(name = "microservice-gps", url = "localhost:9001")
+@FeignClient(name = "microservice-gps", url = "${host.gps}")
 public interface GpsProxy {
 
   @GetMapping(value = "/trackUserLocations")
