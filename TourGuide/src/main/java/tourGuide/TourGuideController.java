@@ -41,11 +41,20 @@ public class TourGuideController {
         return tourGuideService.getUser(userName);
     }
 
+    /**
+     *
+     * @return a list of all the user's current locations
+     */
     @RequestMapping("/getAllCurrentLocations")
     public List<VisitedLocationResponse> getAllCurrentLocations() {
     	return tourGuideService.getAllCurrentLocations();
     }
 
+    /**
+     *
+     * @param userName a name of a user
+     * @return the user's current location
+     */
     @RequestMapping("/getLocation")
     public String getLocation(@RequestParam String userName) {
         User user = getUser(userName);
@@ -53,17 +62,32 @@ public class TourGuideController {
         return JsonStream.serialize(visitedLocationResponse.getLocationResponse());
     }
 
+    /**
+     *
+     * @param userName a name of a user
+     * @return a list of the five closest attractions
+     */
     @RequestMapping("/getNearbyAttractions")
     public List<NearbyAttraction> getNearbyAttractions(@RequestParam String userName) {
         User user = getUser(userName);
     	return tourGuideService.getNearByAttractions(user);
     }
 
+    /**
+     *
+     * @param userName a name of a user
+     * @return a list of the user's rewards
+     */
     @RequestMapping("/getRewards")
     public String getRewards(@RequestParam String userName) {
       return JsonStream.serialize(tourGuideService.getUserRewards(getUser(userName)));
     }
 
+    /**
+     *
+     * @param userName a name of a user
+     * @return a list of the trips proposed by the providers
+     */
     @RequestMapping("/getTripDeals")
     public String getTripDeals(@RequestParam String userName) {
         List<ProviderResponse> providers = tourGuideService.getTripDeals(getUser(userName));
