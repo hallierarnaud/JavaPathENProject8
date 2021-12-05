@@ -101,7 +101,7 @@ public class TourGuideService {
 	public VisitedLocationResponse trackUserLocation(User user) {
 		VisitedLocationResponse visitedLocationResponse = gpsProxy.getUserLocation(user.getUserId());
 		user.addToVisitedLocationResponseList(visitedLocationResponse);
-		rewardsService.calculateRewards(user);
+		rewardsService.calculateRewards(user, false);
 		return visitedLocationResponse;
 	}
 

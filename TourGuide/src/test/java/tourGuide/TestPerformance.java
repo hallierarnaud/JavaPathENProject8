@@ -3,43 +3,37 @@ package tourGuide;
 import org.apache.commons.lang.time.StopWatch;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.object.AttractionResponse;
 import tourGuide.object.LocationResponse;
+import tourGuide.object.User;
 import tourGuide.object.VisitedLocationResponse;
 import tourGuide.proxies.GpsProxy;
-import tourGuide.proxies.RewardsProxy;
 import tourGuide.service.RewardsService;
-import tourGuide.object.User;
 import tourGuide.service.TourGuideService;
 import tourGuide.tracker.TrackerThreadPool;
 
 import static org.junit.Assert.assertTrue;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class TestPerformance {
 
-	@Mock
-	private GpsProxy gpsProxy;
+	@Autowired
+	GpsProxy gpsProxy;
 
-	@Mock
-	private RewardsProxy rewardsProxy;
+	@Autowired
+	RewardsService rewardsService;
 
-	@InjectMocks
-	private RewardsService rewardsService;
-	
 	/*
 	 * A note on performance improvements:
 	 *     
@@ -62,53 +56,49 @@ public class TestPerformance {
 
 	@Test
 	public void highVolumeTrackLocation() {
+		// GIVEN
 		Locale.setDefault(Locale.ENGLISH);
-		RewardsService rewardsService = new RewardsService();
 		// Users should be incremented up to 100,000, and test finishes within 15 minutes
 		InternalTestHelper.setInternalUserNumber(100);
 		TourGuideService tourGuideService = new TourGuideService(rewardsService);
-		
 	    StopWatch stopWatch = new StopWatch();
+
+	    // WHEN
 		stopWatch.start();
 		TrackerThreadPool trackerThreadPool = new TrackerThreadPool(tourGuideService);
 		trackerThreadPool.run();
 		stopWatch.stop();
 
+		// THEN
 		System.out.println("highVolumeTrackLocation: Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + " seconds."); 
 		assertTrue(TimeUnit.MINUTES.toSeconds(15) >= TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()));
 	}
 
 	@Test
 	public void highVolumeGetRewards() {
+		// GIVEN
 		Locale.setDefault(Locale.ENGLISH);
 		// Users should be incremented up to 100,000, and test finishes within 20 minutes
-		InternalTestHelper.setInternalUserNumber(1000);
-		StopWatch stopWatch = new StopWatch();
-		stopWatch.start();
+		InternalTestHelper.setInternalUserNumber(100);
 		TourGuideService tourGuideService = new TourGuideService(rewardsService);
+		StopWatch stopWatch = new StopWatch();
 
+		AttractionResponse attractionResponse = gpsProxy.getAttractions().get(0);
 		LocationResponse locationResponse = new LocationResponse();
-		locationResponse.setLatitude(33.817595D);
-		locationResponse.setLongitude(-117.922008D);
+		locationResponse.setLatitude(attractionResponse.getLatitude());
+		locationResponse.setLongitude(attractionResponse.getLongitude());
+		List<User> allUsers = tourGuideService.getAllUsers();
+		allUsers.forEach(u -> u.addToVisitedLocationResponseList(new VisitedLocationResponse(u.getUserId(), locationResponse, new Date())));
 
-		AttractionResponse attractionResponse = new AttractionResponse(UUID.randomUUID(),"Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D);
-		List<AttractionResponse> attractionResponseList = new ArrayList<>();
-		attractionResponseList.add(attractionResponse);
-		Mockito.when(gpsProxy.getAttractions()).thenReturn(attractionResponseList);
+		// WHEN
+		stopWatch.start();
+		rewardsService.calculateAllRewards(allUsers, true);
+		stopWatch.stop();
 
-		List<User> allUsers = new ArrayList<>();
-		allUsers = tourGuideService.getAllUsers();
-		for (User user : allUsers) {
-			user.addToVisitedLocationResponseList(new VisitedLocationResponse(user.getUserId(), locationResponse, new Date()));
-			Mockito.when(rewardsProxy.getRewards(attractionResponse.attractionId, user.getUserId())).thenReturn(100);
-			rewardsService.calculateRewards(user);
-		}
-
+		// THEN
 		for(User user : allUsers) {
 			assertTrue(user.getUserRewards().size() > 0);
 		}
-		stopWatch.stop();
-
 		System.out.println("highVolumeGetRewards: Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + " seconds."); 
 		assertTrue(TimeUnit.MINUTES.toSeconds(20) >= TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()));
 	}

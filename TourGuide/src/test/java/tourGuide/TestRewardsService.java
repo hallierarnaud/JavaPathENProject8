@@ -58,7 +58,7 @@ public class TestRewardsService {
         Mockito.when(rewardsProxy.getRewards(attractionResponse.attractionId, user.getUserId())).thenReturn(100);
 
         // WHEN
-		rewardsService.calculateRewards(user);
+		rewardsService.calculateRewards(user, false);
 		List<UserReward> userRewards = user.getUserRewards();
 
 		// THEN
@@ -90,7 +90,7 @@ public class TestRewardsService {
 		Mockito.when(gpsProxy.getAttractions()).thenReturn(attractionResponseList);
 
 		// WHEN
-		rewardsService.calculateRewards(tourGuideService.getAllUsers().get(0));
+		rewardsService.calculateRewards(tourGuideService.getAllUsers().get(0), false);
 		List<UserReward> userRewards = tourGuideService.getUserRewards(tourGuideService.getAllUsers().get(0));
 
 		// THEN

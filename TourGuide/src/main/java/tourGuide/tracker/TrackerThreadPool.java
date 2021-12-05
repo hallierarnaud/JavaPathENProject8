@@ -20,8 +20,10 @@ public class TrackerThreadPool extends Thread {
   public void run() {
     List<User> users = tourGuideService.getAllUsers();
     ExecutorService threadPool = Executors.newFixedThreadPool(200);
+    int i = 0;
     for (User user : users) {
-      threadPool.submit(new TrackerThread(user, tourGuideService));
+      i++;
+      threadPool.submit(new TrackerThread(user, tourGuideService, i));
     }
     threadPool.shutdown();
     try {

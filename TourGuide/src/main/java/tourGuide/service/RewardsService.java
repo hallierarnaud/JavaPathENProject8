@@ -4,15 +4,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
-import tourGuide.proxies.GpsProxy;
-import tourGuide.proxies.RewardsProxy;
+import lombok.extern.slf4j.Slf4j;
 import tourGuide.object.AttractionResponse;
 import tourGuide.object.LocationResponse;
 import tourGuide.object.User;
 import tourGuide.object.UserReward;
 import tourGuide.object.VisitedLocationResponse;
+import tourGuide.proxies.GpsProxy;
+import tourGuide.proxies.RewardsProxy;
 
+@Slf4j
 @Service
 public class RewardsService {
 
@@ -37,10 +42,15 @@ public class RewardsService {
 		proximityBuffer = defaultProximityBuffer;
 	}
 
-	public void calculateRewards(User user) {
+	public void calculateRewards(User user, Boolean test) {
+		log.info("start calculate reward" + user.getUserName());
 		List<VisitedLocationResponse> userLocationResponseList = user.getVisitedLocationResponseList();
 		List<AttractionResponse> attractionResponseList = gpsProxy.getAttractions();
-		
+		if (test) {
+			attractionResponseList.clear();
+			attractionResponseList.add(gpsProxy.getAttractions().get(0));
+		}
+		log.info(String.valueOf(attractionResponseList.size()));
 		for(VisitedLocationResponse visitedLocationResponse : userLocationResponseList) {
 			for(AttractionResponse attractionResponse : attractionResponseList) {
 				if(user.getUserRewards().stream().filter(r -> r.attractionResponse.attractionName.equals(attractionResponse.attractionName)).count() == 0) {
@@ -49,6 +59,20 @@ public class RewardsService {
 					}
 				}
 			}
+		}
+		log.info("end calculate reward" + user.getUserName());
+	}
+
+	public void calculateAllRewards(List<User> userList, Boolean test) {
+		ExecutorService threadPool = Executors.newFixedThreadPool(200);
+		for (User user : userList) {
+			threadPool.submit(new Thread(() -> calculateRewards(user, test)));
+		}
+		threadPool.shutdown();
+		try {
+			threadPool.awaitTermination(25, TimeUnit.MINUTES);
+		} catch (InterruptedException e) {
+			System.err.println("ThreadPool interrupted");
 		}
 	}
 	
