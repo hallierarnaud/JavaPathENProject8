@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
@@ -70,11 +69,9 @@ public class TestPerformance {
 		// GIVEN
 		Locale.setDefault(Locale.ENGLISH);
 		// Users should be incremented up to 100,000, and test finishes within 15 minutes
-		//InternalTestHelper.setInternalUserNumber(1);
-		//TourGuideService tourGuideService = new TourGuideService(rewardsService);
 		StopWatch stopWatch = new StopWatch();
 		List<User> userList = new ArrayList<>();
-		IntStream.range(0, 10000).forEach(i -> {
+		IntStream.range(0, 10).forEach(i -> {
 			String userName = "internalUser" + i;
 			String phone = "000";
 			String email = userName + "@tourGuide.com";
@@ -84,7 +81,6 @@ public class TestPerformance {
 
 		// WHEN
 		stopWatch.start();
-
 		TrackerThreadPool trackerThreadPool = new TrackerThreadPool(tourGuideService, userList);
 		trackerThreadPool.start();
 		stopWatch.stop();
@@ -99,7 +95,7 @@ public class TestPerformance {
 		// GIVEN
 		Locale.setDefault(Locale.ENGLISH);
 		// Users should be incremented up to 100,000, and test finishes within 20 minutes
-		InternalTestHelper.setInternalUserNumber(100);
+		InternalTestHelper.setInternalUserNumber(10);
 		TourGuideService tourGuideService = new TourGuideService(rewardsService);
 		StopWatch stopWatch = new StopWatch();
 
