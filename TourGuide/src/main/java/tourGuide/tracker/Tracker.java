@@ -26,7 +26,7 @@ public class Tracker extends Thread {
 	public Tracker(TourGuideService tourGuideService) {
 		this.tourGuideService = tourGuideService;
 		
-		executorService.submit(this);
+		//executorService.submit(this);
 	}
 	
 	/**
@@ -50,7 +50,7 @@ public class Tracker extends Thread {
 			logger.debug("Begin Tracker. Tracking " + users.size() + " users.");
 			stopWatch.start();
 
-			TrackerThreadPool trackerThreadPool = new TrackerThreadPool(tourGuideService);
+			TrackerThreadPool trackerThreadPool = new TrackerThreadPool(tourGuideService, tourGuideService.getAllUsers());
 			trackerThreadPool.run();
 
 			stopWatch.stop();
